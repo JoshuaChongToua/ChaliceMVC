@@ -2,7 +2,7 @@
 
 namespace controller;
 use common\SPDO;
-use model\User as UserModel;
+use model\Users as UserModel;
 use PDOStatement;
 use stdClass;
 class Users
@@ -66,5 +66,14 @@ class Users
 
         return $pdo->execQuery($query);
     }
-    
+
+    public function getRole($userId): UserModel|bool
+    {
+        $query = "SELECT role FROM users_types WHERE type_id ='" . intval($userId) . "';";
+        $user = $this->execQuery($query);
+        if (!$user) {
+            return false;
+        }
+        return new UserModel((object)$user);
+    }
 }

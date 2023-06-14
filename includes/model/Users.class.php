@@ -5,7 +5,7 @@ namespace model;
 use common\SPDO;
 use PDOStatement;
 use stdClass;
-class User
+class Users
 {
     private int $userId;
     private string $login;

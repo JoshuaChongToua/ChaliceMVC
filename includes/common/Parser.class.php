@@ -1,5 +1,6 @@
 <?php
 
+
 namespace common;
 
 use view\Users as UserView;

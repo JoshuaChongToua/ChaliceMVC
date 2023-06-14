@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 spl_autoload_register(function ($class) {
 	if (str_contains($class, '.')) { // Avoid use of '../' in class name
@@ -39,8 +40,8 @@ use common\Parser;
 
 $parser = new Parser($_GET, $_POST);
 
-require_once "includes/header.php";
+//require_once "includes/header.php";
 
 echo $parser->getDisplay();
 
-require_once "includes/footer.php";
+//require_once "includes/footer.php";
