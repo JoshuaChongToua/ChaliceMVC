@@ -1,6 +1,7 @@
 <?php
 
 namespace common;
+
 use view\Users as UserView;
 use controller\Users as UserController;
 
@@ -8,9 +9,10 @@ class Parser
 {
     private string $display = '';
 
-    /**
-     * @param string $display
-     */
+	/**
+	 * @param array $get
+	 * @param array $post
+	 */
     public function __construct(array $get, array $post)
     {
         $this->parse($get, $post);
