@@ -153,5 +153,12 @@ class Users
         $query = "DELETE FROM users WHERE user_id = $this->userId;";
         return $this->execQuery($query);
     }
+
+    private function execQuery(string $query): PDOStatement
+    {
+        $pdo = SPDO::getInstance();
+
+        return $pdo->execQuery($query);
+    }
 }
 

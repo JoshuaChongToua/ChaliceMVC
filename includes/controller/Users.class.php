@@ -31,7 +31,7 @@ class Users
         }
         $return = [];
         foreach ($users as $user) {
-            $return[] = new UserModel($user);
+            $return[] = new UserModel((object) $user);
         }
         return $return;
     }
@@ -60,20 +60,41 @@ class Users
         return $animeModel->save();
     }
 
+
+
+    public function getRole($typeId): UserModel|bool
+    {
+        $query = "SELECT role FROM users_types WHERE type_id ='" . intval($typeId) . "';";
+        $result = $this->execQuery($query);
+        $user = $result->fetch();
+        //echo "<pre>" . print_r($user, true) . "</pre>";
+
+        if (!$user) {
+            return false;
+        }
+        return new UserModel((object)$user);
+    }
+
+    public function getVerification($login, $password): UserModel|bool
+    {
+        $query = "SELECT * FROM users WHERE login='" . $login . "'";
+        $result = $this->execQuery($query);
+        $user = $result->fetch();
+        //echo "<pre>" . print_r($user, true) . "</pre>";
+        //echo $user['password'];
+
+        if (password_verify($password, $user['password'])) {
+            return new UserModel((object)$user);
+        }
+        return false;
+
+
+    }
+
     private function execQuery(string $query): PDOStatement
     {
         $pdo = SPDO::getInstance();
 
         return $pdo->execQuery($query);
-    }
-
-    public function getRole($userId): UserModel|bool
-    {
-        $query = "SELECT role FROM users_types WHERE type_id ='" . intval($userId) . "';";
-        $user = $this->execQuery($query);
-        if (!$user) {
-            return false;
-        }
-        return new UserModel((object)$user);
     }
 }

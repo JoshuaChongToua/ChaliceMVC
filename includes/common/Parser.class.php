@@ -26,23 +26,19 @@ class Parser
 
     private function parse($get, $post): void
     {
+        if (!$_SESSION['login']) {
+            $this->display = $view->getFormLogin()
+        }
         if (!empty($get['view'])) {
             $view = match ($get['view']) {
                 'user' => new UserView(),
-                /*
-                'scan' => new ScanView(),
-                'movie' => new MovieView(),
-                default => new LandingPage(),
-                */
+
             };
 
             if (!empty($get['action'])) {
                 $controller = match ($get['view']) {
                     'user' => new UserController(),
-                    /*
-                    'scan' => new ScanController(),
-                    'movie' => new MovieController()
-                    */
+
                 };
 
                 if (!isset($controller)) {
