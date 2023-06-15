@@ -65,6 +65,8 @@ if (!empty($_POST['login']) && !empty($_POST['password'])) {
         echo "Login ou Password incorrect";
     }
 }
+echo $parser->getDisplay();
+
 //require_once "includes/header.php";
 
   /*  echo '

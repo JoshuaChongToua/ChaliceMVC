@@ -1,7 +1,8 @@
 <?php
 
-
 namespace common;
+
+//session_start();
 
 use view\Users as UserView;
 use controller\Users as UserController;
@@ -26,8 +27,24 @@ class Parser
 
     private function parse($get, $post): void
     {
-        if (!$_SESSION['login']) {
-            $this->display = $view->getFormLogin()
+        if (isset($get['action'])) {
+            $action = $get['action'];
+        }
+        //echo "<pre>" . print_r($_SESSION, true) . "</pre>";
+
+        if (empty($_SESSION['login'])) {
+            $user = new UserView();
+            $this->display = $user->getFormLogin();
+            //echo "<pre>" . print_r($this->display, true) . "</pre>";
+
+            return;
+        } else {
+            $userView = new UserView();
+            $userTable = $userView->getTable();
+            $_SESSION['user_table'] = $userTable;
+            $this->display = $userTable;
+            //echo "<pre>" . print_r($this->display, true) . "</pre>";
+
         }
         if (!empty($get['view'])) {
             $view = match ($get['view']) {
@@ -47,7 +64,7 @@ class Parser
                 }
 
                 if ($get['action'] == 'add') {
-                    if (isset($post)) {
+                    if (!empty($post)) {
                         if (!isset($post[$get['view']])) {
                             $this->display = "Error: failed to post data";
                             return;
@@ -58,7 +75,10 @@ class Parser
                             return;
                         }
                     } else {
-                        $this->display = $view->getForm();
+                        $userView = new UserView();
+                        $this->display = $userView->getForm();
+                        //echo "<pre>" . print_r($this->display, true) . "</pre>";
+
                     }
                 } else if ($get['action'] == 'update') {
                     if (isset($post)) {

@@ -22,11 +22,25 @@ class Users
      */
     public function __construct(StdClass $user = null)
     {
-        $this->userId = $user->user_id;
-        $this->login = $user->login;
-        $this->password = $user->password;
-        $this->typeId = $user->type_id;
-        $this->createDate = $user->create_date;
+        if ($user !== null) {
+            //echo "<pre>" . print_r($user, true) . "</pre>";
+
+            if (property_exists($user, 'user_id')) {
+                $this->userId = $user->user_id;
+            }
+            if (property_exists($user, 'login')) {
+                $this->login = $user->login;
+            }
+            if (property_exists($user, 'password')) {
+                $this->password = $user->password;
+            }
+            if (property_exists($user, 'type_id')) {
+                $this->typeId = $user->type_id;
+            }
+            if (property_exists($user, 'create_date')) {
+                $this->createDate = $user->create_date;
+            }
+        }
     }
 
     public function toArray(): array

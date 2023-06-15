@@ -2,10 +2,12 @@
 
 namespace view;
 use controller\Users as UserController;
+use controller\Types as TypeController;
 
 class Users
 {
     private UserController $controller;
+    private TypeController $typeController;
 
     /**
      * @param UserController $controller
@@ -13,6 +15,7 @@ class Users
     public function __construct()
     {
         $this->controller = new UserController();
+        $this->typeController = new TypeController();
     }
 
     public function getTable(): string
@@ -73,7 +76,11 @@ class Users
                     <!-- /# row -->
 
                     
-                </div>';
+                </div>
+                <a href="?view=user&action=add">Add</a>
+                <a href="?view=user">Retour</a>
+                ';
+
         return $return;
     }
 
@@ -86,6 +93,81 @@ class Users
 
 </form>';
        return $form;
+    }
+
+
+    public function getForm(): string
+    {
+        $action = $_GET['action'];
+
+        if (isset($_POST['user_id'])) {
+            $userInfo = $this->controller->getOne($_POST['user_id']);
+        }
+        $typeCollection = $this->typeController->getAllTypes();
+
+        $return = ' <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                            <div class="card-title">
+                                    <h4>Add User</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-validation">
+                                        
+                                                
+                                                    
+    <form class="form-valide" name="userForm" method="POST" action="?action=' . $action . '"  >
+    
+    <div class="form-group row ">                             
+        <label class="col-lg-3 col-form-label" for="login">Login :<span class="text-danger">*</span></label>
+        <div class="col-lg-9">
+         <input class="form-control" type="text" id="login" name="login"  value="' . ($action == 'update' ? $userInfo->getLogin() : '') . '" onkeypress="verifierCaracteres(event); return false;"/>
+         </div>
+    </div>
+         
+        <br>
+        
+        <div class="form-group row ">                             
+        <label class="col-lg-3 col-form-label" for="password">Password :<span class="text-danger">*</span></label>
+        <div class="col-lg-9">
+        <input class="form-control" id="password" type="password" name="password"  value="' . ($action == 'update' ? $userInfo->getPassword() : '') . '">
+        </div>
+        </div>
+        
+        <br>
+        
+        <input type="hidden" name="user_id" value="' . ($action == 'update' ? $userInfo->getUserId() : '') . '">
+        
+       
+               <div class="form-group row ">                             
+
+        <label class="col-lg-3 col-form-label"for="role">Role :<span class="text-danger">*</span></label>
+        <div class="col-lg-9">
+            <select class="form-control" name="type_id">';
+    /*foreach ($typeCollection as $type) {
+        echo '<option value ="' . $type->type_id . '"' . ($action == 'update' ? $type->role : '') . ' >' . $type->role . '</option>';
+    }*/
+
+    $return .= '</select>
+           
+        </div>
+        </div>
+        <br>
+      
+        <a class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" href="users.php"><i class="ti-back-left"></i></span>Retour</a>
+                   
+        <button type="submit" name="submit"  class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
+                                        
+    </form>
+    </div>
+    </div>
+            </div>
+            </div>
+            </div>
+            </section>
+
+    ';
+    return $return;
     }
 
 }
