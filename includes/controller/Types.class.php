@@ -3,7 +3,7 @@
 namespace controller;
 
 use common\SPDO;
-use model\Users as UserModel;
+use model\Types as TypesModel;
 use PDOStatement;
 use stdClass;
 
@@ -23,7 +23,7 @@ class Types
         }
         $return = [];
         foreach ($types as $type) {
-            $return[] = new UserModel((object) $type);
+            $return[] = new TypesModel((object) $type);
         }
         return $return;
     }

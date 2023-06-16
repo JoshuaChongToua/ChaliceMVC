@@ -51,7 +51,7 @@ class Users
                 $return .= '<tr class="jsgrid-align-center" style="display: table-row;">';
                 $return .= '<td style="width: 150px;">' . $user->getUserId() . '</td>';
                 $return .= '<td style="width: 100px;">' . $user->getLogin() . '</td>';
-                //$role = getRole($user->type_id);
+                //$role = $this->controller->getRole($user->getTypeId());
                 //echo "<pre>" . print_r($role, true) . "</pre>";
                 $return .= '<td style="width: 100px;"></td>';
                 $return .= '<td style="width: 100px;">' . $user->getCreateDate() . '</td>';
@@ -84,16 +84,7 @@ class Users
         return $return;
     }
 
-    public function getFormLogin(): string
-    {
-       $form = '<form name="index" method="POST"  onsubmit= "return validateForm2(\'index\',\'login\', \'password\'); "  >
-        Login : <input type="text" name="login" autocomplete="off" onkeypress="verifierCaracteres(event); return false;">
-        Password : <input type="password" name="password" autocomplete="off" >
-    <input type="submit" name="submit" value="submit">
 
-</form>';
-       return $form;
-    }
 
 
     public function getForm(): string
@@ -104,6 +95,8 @@ class Users
             $userInfo = $this->controller->getOne($_POST['user_id']);
         }
         $typeCollection = $this->typeController->getAllTypes();
+        //echo "<pre>" . print_r($typeCollection, true) . "</pre>";
+
 
         $return = ' <div class="row">
                         <div class="col-lg-12">
@@ -116,7 +109,7 @@ class Users
                                         
                                                 
                                                     
-    <form class="form-valide" name="userForm" method="POST" action="?action=' . $action . '"  >
+    <form class="form-valide" name="userForm" method="POST" action="?view=user&action=' . $action . '"  >
     
     <div class="form-group row ">                             
         <label class="col-lg-3 col-form-label" for="login">Login :<span class="text-danger">*</span></label>
@@ -144,9 +137,11 @@ class Users
         <label class="col-lg-3 col-form-label"for="role">Role :<span class="text-danger">*</span></label>
         <div class="col-lg-9">
             <select class="form-control" name="type_id">';
-    /*foreach ($typeCollection as $type) {
-        echo '<option value ="' . $type->type_id . '"' . ($action == 'update' ? $type->role : '') . ' >' . $type->role . '</option>';
-    }*/
+    foreach ($typeCollection as $type) {
+
+        $return .= '<option value ="' . $type->getRole() . '"' . ($action == 'update' ? $type->getRole() : '') . ' >' . $type->getRole() . '</option>';
+
+    }
 
     $return .= '</select>
            
@@ -154,7 +149,7 @@ class Users
         </div>
         <br>
       
-        <a class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" href="users.php"><i class="ti-back-left"></i></span>Retour</a>
+        <a class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" href="?view=user"><i class="ti-back-left"></i></span>Retour</a>
                    
         <button type="submit" name="submit"  class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
                                         

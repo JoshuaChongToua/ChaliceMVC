@@ -20,13 +20,13 @@ class Users
      * @param int $typeId
      * @param string $createDate
      */
-    public function __construct(StdClass $user = null)
+    public function __construct(StdClass $user)
     {
-        if ($user !== null) {
+
             //echo "<pre>" . print_r($user, true) . "</pre>";
 
             if (property_exists($user, 'user_id')) {
-                $this->userId = $user->user_id;
+                $this->userId =  intval($user->user_id);
             }
             if (property_exists($user, 'login')) {
                 $this->login = $user->login;
@@ -35,12 +35,12 @@ class Users
                 $this->password = $user->password;
             }
             if (property_exists($user, 'type_id')) {
-                $this->typeId = $user->type_id;
+                $this->typeId = intval($user->type_id);
             }
             if (property_exists($user, 'create_date')) {
                 $this->createDate = $user->create_date;
             }
-        }
+
     }
 
     public function toArray(): array

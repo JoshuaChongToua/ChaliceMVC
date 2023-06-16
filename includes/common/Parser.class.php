@@ -2,10 +2,12 @@
 
 namespace common;
 
-//session_start();
-
-use view\Users as UserView;
 use controller\Users as UserController;
+use controller\Login as LoginController;
+use view\Dashboard as DashboardView ;
+use view\Login as LoginView;
+use view\Users as UserView;
+
 
 class Parser
 {
@@ -27,6 +29,43 @@ class Parser
 
     private function parse($get, $post): void
     {
+        var_dump($get, $post, $_SESSION);
+        if (isset($get['action']) && $get['action'] == "logout") {
+            $controller = new LoginController();
+            $controller->logout();
+        }
+        if (!isset($_SESSION['login'])) {
+            echo "1";
+            if (!empty($post)) {
+                echo "2";
+                $controller = new LoginController();
+                if (!$controller->verifyForm($post)) {
+                    echo "3";
+                    $this->display = "Error login";
+
+                    return;
+                }
+            }
+
+            if (!isset($_SESSION['login'])) {
+                echo "4";
+                $view = new LoginView();
+                $this->display = $view->getForm();
+
+                return;
+            } else {
+                $view = new DashboardView();
+                echo "5";
+                $this->display = $view->getLandingPage();
+
+                return;
+            }
+echo "6";
+
+
+        }
+
+
         if (isset($get['action'])) {
             $action = $get['action'];
         }
@@ -46,6 +85,7 @@ class Parser
             //echo "<pre>" . print_r($this->display, true) . "</pre>";
 
         }
+
         if (!empty($get['view'])) {
             $view = match ($get['view']) {
                 'user' => new UserView(),
@@ -64,19 +104,26 @@ class Parser
                 }
 
                 if ($get['action'] == 'add') {
+                    echo "<pre>" . print_r($post, true) . "</pre>";
                     if (!empty($post)) {
-                        if (!isset($post[$get['view']])) {
+                        if (!$controller->verifyForm($post)) {
+                            echo "aaaa";
+                            echo "<pre>" . print_r($get, true) . "</pre>";
+
                             $this->display = "Error: failed to post data";
                             return;
                         }
 
-                        if (!$controller->addNew($post[$get['view']])) {
+                        if (!$controller->addNew($post)) {
+
                             $this->display = "Error: failed add data in database";
                             return;
                         }
                     } else {
                         $userView = new UserView();
                         $this->display = $userView->getForm();
+                        echo $this->display
+                            ;
                         //echo "<pre>" . print_r($this->display, true) . "</pre>";
 
                     }

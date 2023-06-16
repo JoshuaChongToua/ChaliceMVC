@@ -41,31 +41,12 @@ spl_autoload_register(function ($class) {
 });
 
 use common\Parser;
-
+var_dump($_GET, $_POST);
 $parser = new Parser($_GET, $_POST);
-$userController = new UserController();
-
-if (!empty($_POST['login']) && !empty($_POST['password'])) {
-
-    $test = $userController->getVerification($_POST['login'], $_POST['password']);
-    if ($test) {
-        session_start();
-        $_SESSION['login'] = $test->getLogin();
-        $_SESSION['user_id'] = $test->getUserId();
-        $_SESSION['type_id'] = $test->getTypeId();
-        //$_SESSION['role'] = $userController->getRole($_SESSION['type_id']);
-
-        echo "<pre>" . print_r($_SESSION, true) . "</pre>";
 
 
-        echo $parser->getDisplay();
-        header("Location:?view=user");
-
-    } else {
-        echo "Login ou Password incorrect";
-    }
-}
 echo $parser->getDisplay();
+
 
 //require_once "includes/header.php";
 

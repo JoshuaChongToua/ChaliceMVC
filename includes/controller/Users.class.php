@@ -55,9 +55,9 @@ class Users
 
     private function save(array $user): PDOStatement|bool
     {
-        $animeModel = new AnimeModel((object) $user);
+        $userModel = new UserModel((object) $user);
 
-        return $animeModel->save();
+        return $userModel->save();
     }
 
 
@@ -75,20 +75,14 @@ class Users
         return new UserModel((object)$user);
     }
 
-    public function getVerification($login, $password): UserModel|bool
+
+
+    public function verifyForm(array $array): bool
     {
-        $query = "SELECT * FROM users WHERE login='" . $login . "'";
-        $result = $this->execQuery($query);
-        $user = $result->fetch();
-        //echo "<pre>" . print_r($user, true) . "</pre>";
-        //echo $user['password'];
-
-        if (password_verify($password, $user['password'])) {
-            return new UserModel((object)$user);
+        if (!isset($array['login']) && !isset($array['password']) && !isset($array['type_id'])) {
+            return false;
         }
-        return false;
-
-
+        return true;
     }
 
     private function execQuery(string $query): PDOStatement
