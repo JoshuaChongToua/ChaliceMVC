@@ -2,7 +2,9 @@
 
 namespace controller;
 
+use common\SPDO;
 use model\Users as UserModel;
+use PDOStatement;
 
 class Login
 {
@@ -53,5 +55,12 @@ class Login
         //$_SESSION['role'] = $userController->getRole($_SESSION['type_id']);
 
         return true;
+    }
+
+    private function execQuery(string $query): PDOStatement
+    {
+        $pdo = SPDO::getInstance();
+
+        return $pdo->execQuery($query);
     }
 }

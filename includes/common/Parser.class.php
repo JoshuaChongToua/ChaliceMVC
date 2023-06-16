@@ -35,12 +35,9 @@ class Parser
         }
 
         if (!isset($_SESSION['login'])) {
-            echo "1";
             if (!empty($post)) {
-                echo "2";
                 $controller = new LoginController();
                 if (!$controller->verifyForm($post)) {
-                    echo "3";
                     $this->display = "Error login";
 
                     return;
@@ -48,54 +45,36 @@ class Parser
             }
 
             if (!isset($_SESSION['login'])) {
-                echo "4";
                 $view = new LoginView();
                 $this->display = $view->getForm();
 
                 return;
             } else {
                 $view = new DashboardView();
-                echo "5";
                 $this->display = $view->getLandingPage();
 
                 return;
             }
-echo "6";
 
 
-        }
-
-
-        if (isset($get['action'])) {
-            $action = $get['action'];
         }
         //echo "<pre>" . print_r($_SESSION, true) . "</pre>";
-
-        if (empty($_SESSION['login'])) {
-            $user = new UserView();
-            $this->display = $user->getFormLogin();
-            //echo "<pre>" . print_r($this->display, true) . "</pre>";
-
-            return;
-        } else {
-            $userView = new UserView();
-            $userTable = $userView->getTable();
-            $_SESSION['user_table'] = $userTable;
-            $this->display = $userTable;
-            //echo "<pre>" . print_r($this->display, true) . "</pre>";
-
-        }
 
         if (!empty($get['view'])) {
             $view = match ($get['view']) {
                 'user' => new UserView(),
-
+                default => new DashboardView()
             };
+
+            if ($view instanceof DashboardView) {
+                $this->display = $view->getLandingPage();
+
+                return;
+            }
 
             if (!empty($get['action'])) {
                 $controller = match ($get['view']) {
-                    'user' => new UserController(),
-
+                    'user' => new UserController()
                 };
 
                 if (!isset($controller)) {
@@ -104,11 +83,10 @@ echo "6";
                 }
 
                 if ($get['action'] == 'add') {
-                    echo "<pre>" . print_r($post, true) . "</pre>";
+                    //echo "<pre>" . print_r($post, true) . "</pre>";
                     if (!empty($post)) {
                         if (!$controller->verifyForm($post)) {
-                            echo "aaaa";
-                            echo "<pre>" . print_r($get, true) . "</pre>";
+
 
                             $this->display = "Error: failed to post data";
                             return;
@@ -122,8 +100,8 @@ echo "6";
                     } else {
                         $userView = new UserView();
                         $this->display = $userView->getForm();
-                        echo $this->display
-                            ;
+
+                        return;
                         //echo "<pre>" . print_r($this->display, true) . "</pre>";
 
                     }
@@ -155,6 +133,7 @@ echo "6";
 
             if (empty($display)) {
                 $this->display = $view->getTable();
+
             }
         }
     }

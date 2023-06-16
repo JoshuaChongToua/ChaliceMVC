@@ -7,7 +7,7 @@ use model\Types as TypesModel;
 use PDOStatement;
 use stdClass;
 
-class Types
+class UsersTypes
 {
 
     public function __construct()
@@ -27,6 +27,8 @@ class Types
         }
         return $return;
     }
+
+
 
     private function execQuery(string $query): PDOStatement
     {

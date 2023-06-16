@@ -2,12 +2,12 @@
 
 namespace view;
 use controller\Users as UserController;
-use controller\Types as TypeController;
+use controller\UsersTypes as UsersTypeController;
 
 class Users
 {
     private UserController $controller;
-    private TypeController $typeController;
+    private UsersTypeController $typeController;
 
     /**
      * @param UserController $controller
@@ -15,7 +15,7 @@ class Users
     public function __construct()
     {
         $this->controller = new UserController();
-        $this->typeController = new TypeController();
+        $this->typeController = new UsersTypeController();
     }
 
     public function getTable(): string
