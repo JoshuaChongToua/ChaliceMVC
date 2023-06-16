@@ -1,9 +1,6 @@
 <?php
+
 session_start();
-
-
-use controller\Users as UserController;
-
 
 spl_autoload_register(function ($class) {
 	if (str_contains($class, '.')) { // Avoid use of '../' in class name
@@ -41,22 +38,7 @@ spl_autoload_register(function ($class) {
 });
 
 use common\Parser;
-var_dump($_GET, $_POST);
+
 $parser = new Parser($_GET, $_POST);
 
-
 echo $parser->getDisplay();
-
-
-//require_once "includes/header.php";
-
-  /*  echo '
-<form name="index" method="POST"  onsubmit= "return validateForm2(\'index\',\'login\', \'password\'); "  >
-    Login : <input type="text" name="login" autocomplete="off" onkeypress="verifierCaracteres(event); return false;">
-    Password : <input type="password" name="password" autocomplete="off" >
-    <input type="submit" name="submit" value="submit">
-
-</form>';
-
-*/
-//require_once "includes/footer.php";

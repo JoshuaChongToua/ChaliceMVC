@@ -29,11 +29,11 @@ class Parser
 
     private function parse($get, $post): void
     {
-        var_dump($get, $post, $_SESSION);
         if (isset($get['action']) && $get['action'] == "logout") {
             $controller = new LoginController();
             $controller->logout();
         }
+
         if (!isset($_SESSION['login'])) {
             echo "1";
             if (!empty($post)) {
