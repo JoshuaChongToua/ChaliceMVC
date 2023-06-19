@@ -1,11 +1,13 @@
 <?php
 
+use model\UsersTypes;
+
 $isLaragon = "";
 if ($_SERVER['HTTP_HOST'] == "localhost") {
     $isLaragon = "/Chalice";
 }
+?>
 
-echo '
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,8 +15,8 @@ echo '
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Chalice</title>
-    <link href="' . $isLaragon . '/includes/assets/css/images.css" rel="stylesheet" media="screen">
-    <script type="text/javascript" src="' . $isLaragon . '/includes/assets/js/functions.js"></script>
+    <link href="<?php echo $isLaragon ?>/includes/assets/css/images.css" rel="stylesheet" media="screen">
+    <script type="text/javascript" src="<?php echo $isLaragon ?>/includes/assets/js/functions.js"></script>
     <!-- ================= Favicon ================== -->
     <!-- Standard -->
     <link rel="shortcut icon" href="http://placehold.it/64.png/000/fff">
@@ -26,74 +28,72 @@ echo '
     <link rel="apple-touch-icon" sizes="72x72" href="http://placehold.it/72.png/000/fff">
     <!-- Standard iPhone Touch Icon-->
     <link rel="apple-touch-icon" sizes="57x57" href="http://placehold.it/57.png/000/fff">
-    
+
     <!-- Common -->
-    <link href="../assets/css/lib/font-awesome.min.css" rel="stylesheet">
-    <link href="../assets/css/lib/themify-icons.css" rel="stylesheet">
-    <link href="../assets/css/lib/menubar/sidebar.css" rel="stylesheet">
-    <link href="../assets/css/lib/bootstrap.min.css" rel="stylesheet">
-    <link href="../assets/css/lib/helper.css" rel="stylesheet">
-    <link href="../assets/css/style.css" rel="stylesheet">
-    <link href="../assets/css/lib/jsgrid/jsgrid-theme.min.css" rel="stylesheet" />
-    <link href="../assets/css/lib/jsgrid/jsgrid.min.css" type="text/css" rel="stylesheet" />
-    
-    
+    <link href="includes/assets/css/lib/font-awesome.min.css" rel="stylesheet">
+    <link href="includes/assets/css/lib/themify-icons.css" rel="stylesheet">
+    <link href="includes/assets/css/lib/menubar/sidebar.css" rel="stylesheet">
+    <link href="includes/assets/css/lib/bootstrap.min.css" rel="stylesheet">
+    <link href="includes/assets/css/lib/helper.css" rel="stylesheet">
+    <link href="includes/assets/css/style.css" rel="stylesheet">
+    <link href="includes/assets/css/lib/jsgrid/jsgrid-theme.min.css" rel="stylesheet"/>
+    <link href="includes/assets/css/lib/jsgrid/jsgrid.min.css" type="text/css" rel="stylesheet"/>
+
+
 </head>
-<body >
-';
-?>
+<body>
 
 
 <div class="sidebar sidebar-hide-to-small sidebar-shrink sidebar-gestures">
     <div class="nano">
         <div class="nano-content">
-            <div class="logo"><a href="main.php"><img src="../assets/images/logo.png" width="50px" height="50px"
+            <div class="logo"><a href="main.php"><img src="includes/assets/images/logo.png" width="50px" height="50px"
                                                       alt=""/>
                     <span>Chalice Admin</span></a>
             </div>
             <ul>
 
                 <?php
-                if ($role[0]->role == "admin") { ?>
+                if ($_SESSION['type_id'] == UsersTypes::TYPE_ADMIN) { ?>
                     <li><a class="sidebar-sub-toggle"><i class="ti-user"></i> Users <span
-                                class="sidebar-collapse-icon ti-angle-down"></span></a>
+                                    class="sidebar-collapse-icon ti-angle-down"></span></a>
                         <ul>
 
-                            <li><a href="users.php">Liste Users</a></li>
-                            <li><a href="users.php?action=create">Add User</a></li>
+                            <li><a href="?view=user">Liste Users</a></li>
+                            <li><a href="?view=user&action=add">Add User</a></li>
                             <li><a href="profiles.php">Profile</a></li>
 
                         </ul>
                     </li>
                 <?php } ?>
                 <li><a class="sidebar-sub-toggle"><i class="ti-files"></i> News <span
-                            class="sidebar-collapse-icon ti-angle-down"></span></a>
+                                class="sidebar-collapse-icon ti-angle-down"></span></a>
                     <ul>
                         <li><a href="news.php">Liste News</a></li>
                         <li><a href="news.php?action=create">Add News</a></li>
                     </ul>
                 </li>
                 <?php
-                if ($role[0]->role == "admin") { ?>
+                if ($_SESSION['type_id'] == UsersTypes::TYPE_ADMIN) { ?>
                     <li><a class="sidebar-sub-toggle"><i class="ti-target"></i> Types <span
-                                class="sidebar-collapse-icon ti-angle-down"></span></a>
+                                    class="sidebar-collapse-icon ti-angle-down"></span></a>
                         <ul>
-                            <li><a href="types.php">Liste Types</a></li>
-                            <li><a href="types.php?action=create">Add Type</a></li>
+                            <li><a href="?view=type">Liste Types</a></li>
+                            <li><a href="?view=type&action=add">Add Type</a></li>
 
                         </ul>
                     </li>
                 <?php } ?>
 
                 <li><a class="sidebar-sub-toggle"><i class="ti-image"></i> Images <span
-                            class="sidebar-collapse-icon ti-angle-down"></span></a>
+                                class="sidebar-collapse-icon ti-angle-down"></span></a>
                     <ul>
                         <li><a href="images.php">Liste Images</a></li>
                         <li><a href="images.php?action=create">Add Image</a></li>
                     </ul>
                 </li>
 
-                <li><a href="../logout.php"><i class="ti-close"></i> Logout</a></li>
+                <li><a href="includes/logout.php"><i class="ti-close"></i> Logout</a></li>
             </ul>
         </div>
     </div>
@@ -121,9 +121,9 @@ echo '
                                 <div class="dropdown-content-body">
                                     <ul>
                                         <li>
-                                            <a href="../logout.php">
+                                            <a href="includes/logout.php">
                                                 <img class="pull-left m-r-10 avatar-img"
-                                                     src="../assets/images/avatar/3.jpg" alt=""/>
+                                                     src="includes/assets/images/avatar/3.jpg" alt=""/>
                                                 <div class="notification-content">
                                                     <small class="notification-timestamp pull-right">02:34 PM</small>
                                                     <div class="notification-heading">Mr. John</div>
@@ -134,7 +134,7 @@ echo '
                                         <li>
                                             <a href="#">
                                                 <img class="pull-left m-r-10 avatar-img"
-                                                     src="../assets/images/avatar/3.jpg" alt=""/>
+                                                     src="includes/assets/images/avatar/3.jpg" alt=""/>
                                                 <div class="notification-content">
                                                     <small class="notification-timestamp pull-right">02:34 PM</small>
                                                     <div class="notification-heading">Mariam</div>
@@ -145,7 +145,7 @@ echo '
                                         <li>
                                             <a href="#">
                                                 <img class="pull-left m-r-10 avatar-img"
-                                                     src="../assets/images/avatar/3.jpg" alt=""/>
+                                                     src="includes/assets/images/avatar/3.jpg" alt=""/>
                                                 <div class="notification-content">
                                                     <small class="notification-timestamp pull-right">02:34 PM</small>
                                                     <div class="notification-heading">Tasnim</div>
@@ -158,7 +158,7 @@ echo '
                                         <li>
                                             <a href="#">
                                                 <img class="pull-left m-r-10 avatar-img"
-                                                     src="../assets/images/avatar/3.jpg" alt=""/>
+                                                     src="includes/assets/images/avatar/3.jpg" alt=""/>
                                                 <div class="notification-content">
                                                     <small class="notification-timestamp pull-right">02:34 PM</small>
                                                     <div class="notification-heading">Mr. John</div>
@@ -191,7 +191,7 @@ echo '
                                         <li class="notification-unread">
                                             <a href="#">
                                                 <img class="pull-left m-r-10 avatar-img"
-                                                     src="../assets/images/avatar/1.jpg" alt=""/>
+                                                     src="includes/assets/images/avatar/1.jpg" alt=""/>
                                                 <div class="notification-content">
                                                     <small class="notification-timestamp pull-right">02:34 PM</small>
                                                     <div class="notification-heading">Michael Qin</div>
@@ -204,7 +204,7 @@ echo '
                                         <li class="notification-unread">
                                             <a href="#">
                                                 <img class="pull-left m-r-10 avatar-img"
-                                                     src="../assets/images/avatar/2.jpg" alt=""/>
+                                                     src="includes/assets/images/avatar/2.jpg" alt=""/>
                                                 <div class="notification-content">
                                                     <small class="notification-timestamp pull-right">02:34 PM</small>
                                                     <div class="notification-heading">Mr. John</div>
@@ -217,7 +217,7 @@ echo '
                                         <li>
                                             <a href="#">
                                                 <img class="pull-left m-r-10 avatar-img"
-                                                     src="../assets/images/avatar/3.jpg" alt=""/>
+                                                     src="includes/assets/images/avatar/3.jpg" alt=""/>
                                                 <div class="notification-content">
                                                     <small class="notification-timestamp pull-right">02:34 PM</small>
                                                     <div class="notification-heading">Michael Qin</div>
@@ -230,7 +230,7 @@ echo '
                                         <li>
                                             <a href="#">
                                                 <img class="pull-left m-r-10 avatar-img"
-                                                     src="../assets/images/avatar/2.jpg" alt=""/>
+                                                     src="includes/assets/images/avatar/2.jpg" alt=""/>
                                                 <div class="notification-content">
                                                     <small class="notification-timestamp pull-right">02:34 PM</small>
                                                     <div class="notification-heading">Mr. John</div>
@@ -283,7 +283,7 @@ echo '
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="../logout.php">
+                                            <a href="includes/logout.php">
                                                 <i class="ti-power-off"></i>
                                                 <span>Logout</span>
                                             </a>
@@ -312,26 +312,7 @@ echo '
                     </div>
                 </div>
 
-                <div class="col-lg-4 p-l-0 title-margin-left">
-                    <div class="page-header">
-                        <div class="page-title">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a
-                                        href="<?php echo $filename; ?>"><?php echo $filenameWithoutExtension ?></a>
-                                </li>
-                                <?php
-                                if (isset($_GET['action'])) {
-                                    $action = $_GET['action'];
-                                } else {
-                                    $action = 'Listing';
-                                }
-                                ?>
-                                <li class="breadcrumb-item active"><?php echo $action; ?> </li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-
+                
             </div>
             <div id="main-content">
                 <div class="row">

@@ -2,20 +2,21 @@
 
 namespace view;
 use controller\Users as UserController;
-use controller\UsersTypes as UsersTypeController;
+use controller\UsersTypes as UsersTypesController;
 
 class Users
 {
     private UserController $controller;
-    private UsersTypeController $typeController;
-
-    /**
-     * @param UserController $controller
-     */
+    
+    
     public function __construct()
     {
         $this->controller = new UserController();
-        $this->typeController = new UsersTypeController();
+    }
+    
+    public function getController(): UserController
+    {
+        return $this->controller;
     }
 
     public function getTable(): string
@@ -25,6 +26,7 @@ class Users
             return "Error; Fail to load users";
         }
         $return = '
+    <div class="container">
                 <div id="main-content">
                     <div class="row">
                         <div class="col-lg-12">
@@ -39,7 +41,7 @@ class Users
                                                     <th style="width: 150px;">Role</th>
                                                     <th style="width: 200px;">Create Date</th>
                                                     <th style="width: 100px;">
-                                                        <a href="?action=create"><span class="jsgrid-button jsgrid-mode-button jsgrid-insert-mode-button ti-plus" type="button" title=""></span></a>
+                                                        <a href="?view=user&action=add"><span class="jsgrid-button jsgrid-mode-button jsgrid-insert-mode-button ti-plus" type="button" title=""></span></a>
                                                     </th>            
                                                 </tr>
                                              </thead>
@@ -47,17 +49,20 @@ class Users
 
 
         foreach ($users as $user) {
+            //echo "<pre>" . print_r($user, true) . "</pre>";
+
             if ($user->getUserId() != $_SESSION['user_id']) {
                 $return .= '<tr class="jsgrid-align-center" style="display: table-row;">';
                 $return .= '<td style="width: 150px;">' . $user->getUserId() . '</td>';
                 $return .= '<td style="width: 100px;">' . $user->getLogin() . '</td>';
-                //$role = $this->controller->getRole($user->getTypeId());
+                $role = $this->controller->getRole($user->getTypeId());
                 //echo "<pre>" . print_r($role, true) . "</pre>";
-                $return .= '<td style="width: 100px;"></td>';
+                $return .= '<td style="width: 100px;">' . $role .'</td>';
+                //$return .= '<td style="width: 100px;"></td>';
                 $return .= '<td style="width: 100px;">' . $user->getCreateDate() . '</td>';
                 $return .= '<td style="width: 50px;"> 
-                <a href="?action=update&user_id=' . $user->getUserId() . '"><span class="jsgrid-button jsgrid-edit-button ti-pencil" type="button" title="Edit"  ></span></a> 
-                <a href="?action=delete&user_id=' . $user->getUserId() . '"><span class="jsgrid-button jsgrid-delete-button ti-trash" type="button" title="Delete"></span></a> 
+                <a href="?view=user&action=update&user_id=' . $user->getUserId() . '"><span class="jsgrid-button jsgrid-edit-button ti-pencil" type="button" title="Edit"  ></span></a> 
+                <a href="?view=user&action=delete&user_id=' . $user->getUserId() . '"><span class="jsgrid-button jsgrid-delete-button ti-trash" type="button" title="Delete"></span> </a> 
                 </td>';
                 $return .= '</tr>';
             }
@@ -77,8 +82,7 @@ class Users
 
                     
                 </div>
-                <a href="?view=user&action=add">Add</a>
-                <a href="?view=user">Retour</a>
+                </div>
                 ';
 
         return $return;
@@ -87,18 +91,20 @@ class Users
 
 
 
-    public function getForm(): string
+    public function getForm(string $action, int $userId = null): string
     {
-        $action = $_GET['action'];
-
-        if (isset($_POST['user_id'])) {
-            $userInfo = $this->controller->getOne($_POST['user_id']);
+        if (isset($userId)) {
+            $userInfo = $this->controller->getOne($_GET['user_id']);
+            //echo "<pre>" . print_r($userInfo, true) . "</pre>";
         }
-        $typeCollection = $this->typeController->getAllTypes();
-        //echo "<pre>" . print_r($typeCollection, true) . "</pre>";
+        $usersTypesController = new UsersTypesController();
+        $usersTypesCollection = $usersTypesController->getAll();
+        //echo "<pre>" . print_r($usersTypesCollection, true) . "</pre>";
 
 
-        $return = ' <div class="row">
+        $return = ' 
+                <div class="container">
+                    <div class="row">
                         <div class="col-lg-12">
                             <div class="card">
                             <div class="card-title">
@@ -137,9 +143,9 @@ class Users
         <label class="col-lg-3 col-form-label"for="role">Role :<span class="text-danger">*</span></label>
         <div class="col-lg-9">
             <select class="form-control" name="type_id">';
-    foreach ($typeCollection as $type) {
+    foreach ($usersTypesCollection as $type) {
 
-        $return .= '<option value ="' . $type->getRole() . '"' . ($action == 'update' ? $type->getRole() : '') . ' >' . $type->getRole() . '</option>';
+        $return .= '<option value ="' . $type->getTypeId() . '"' . ($action == 'update' ? $type->getTypeId() : '') . ' >' . $type->getRole() . '</option>';
 
     }
 
@@ -159,7 +165,8 @@ class Users
             </div>
             </div>
             </div>
-            </section>
+            </div>
+            
 
     ';
     return $return;

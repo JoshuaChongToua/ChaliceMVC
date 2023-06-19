@@ -2,6 +2,7 @@
 
 namespace controller;
 
+use common\Helper;
 use common\SPDO;
 use model\Users as UserModel;
 use PDOStatement;
@@ -40,7 +41,7 @@ class Login
         //echo "<pre>" . print_r($user, true) . "</pre>";
         //echo $user['password'];
 
-        if (password_verify($password, $user['password'])) {
+        if (Helper::uncrypt($password, $user['password'])) {
             return new UserModel((object)$user);
         }
 
@@ -52,7 +53,6 @@ class Login
         $_SESSION['login'] = $user->getLogin();
         $_SESSION['user_id'] = $user->getUserId();
         $_SESSION['type_id'] = $user->getTypeId();
-        //$_SESSION['role'] = $userController->getRole($_SESSION['type_id']);
 
         return true;
     }

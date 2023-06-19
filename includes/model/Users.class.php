@@ -2,6 +2,7 @@
 
 namespace model;
 
+use common\Helper;
 use common\SPDO;
 use PDOStatement;
 use stdClass;
@@ -13,13 +14,7 @@ class Users
     private int $typeId;
     private string $createDate;
 
-    /**
-     * @param int $userId
-     * @param string $login
-     * @param string $password
-     * @param int $typeId
-     * @param string $createDate
-     */
+
     public function __construct(StdClass $user)
     {
 
@@ -144,14 +139,14 @@ class Users
         if (!empty($this->userId)) {
             $query = "UPDATE users SET 
                  login = '" . $this->login . "', 
-                 password = '" . $this->password . "', 
+                 password = '" . Helper::crypt($this->password) . "', 
                  type_id = '" . $this->typeId . "'
                  WHERE user_id = '" . $this->userId . "';
             ";
         } else {
             $query = "INSERT INTO users (login, password, type_id) VALUES (
                                                      '" . $this->login . "',
-                                                     '" . $this->password . "',
+                                                     '" . Helper::crypt($this->password) . "',
                                                      '" . $this->typeId . "'
 )";
         }

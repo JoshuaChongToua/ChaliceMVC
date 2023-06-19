@@ -3,6 +3,7 @@
 namespace controller;
 use common\SPDO;
 use model\Users as UserModel;
+use controller\UsersTypes as UsersTypesController;
 use PDOStatement;
 use stdClass;
 class Users
@@ -14,8 +15,9 @@ class Users
 
     public function getOne(int $userId): UserModel|bool
     {
-        $query = "SELECT * from users where user_id='" . inval($userId) . "';";
-        $user = $this->execQuery($query);
+        $query = "SELECT * from users where user_id='" . intval($userId) . "';";
+        $result = $this->execQuery($query);
+        $user = $result->fetch();
         if (!$user){
             return false;
         }
@@ -62,18 +64,19 @@ class Users
 
 
 
-    public function getRole($typeId): UserModel|bool
+    public function getRole(int $userTypeId): ?string
     {
-        $query = "SELECT role FROM users_types WHERE type_id ='" . intval($typeId) . "';";
-        $result = $this->execQuery($query);
-        $user = $result->fetch();
-        //echo "<pre>" . print_r($user, true) . "</pre>";
+        $userTypeController = new UsersTypesController();
+        $role = $userTypeController->getOne($userTypeId);
+        //var_dump($role);
 
-        if (!$user) {
-            return false;
+        if ($role === false) {
+            return null;
         }
-        return new UserModel((object)$user);
+
+        return $role->getRole();
     }
+
 
 
 
@@ -82,6 +85,7 @@ class Users
         if (!isset($array['login']) && !isset($array['password']) && !isset($array['type_id'])) {
             return false;
         }
+
         return true;
     }
 
