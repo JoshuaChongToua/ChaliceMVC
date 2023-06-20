@@ -2,6 +2,19 @@
 
 use model\UsersTypes;
 
+function creerDossierUtilisateur($nomUtilisateur)
+{
+    $cheminDossier = "../assets/images/profiles/" . $nomUtilisateur;
+
+    if (!file_exists($cheminDossier)) {
+        // Créer le dossier avec les permissions appropriées (par exemple, 0777 pour des permissions complètes)
+        mkdir($cheminDossier, 0777, true);
+    }
+}
+
+creerDossierUtilisateur($_SESSION['user_id']);
+
+
 $isLaragon = "";
 if ($_SERVER['HTTP_HOST'] == "localhost") {
     $isLaragon = "/Chalice";
@@ -88,12 +101,12 @@ if ($_SERVER['HTTP_HOST'] == "localhost") {
                 <li><a class="sidebar-sub-toggle"><i class="ti-image"></i> Images <span
                                 class="sidebar-collapse-icon ti-angle-down"></span></a>
                     <ul>
-                        <li><a href="images.php">Liste Images</a></li>
-                        <li><a href="images.php?action=create">Add Image</a></li>
+                        <li><a href="?view=image">Liste Images</a></li>
+                        <li><a href="?view=image&action=add">Add Image</a></li>
                     </ul>
                 </li>
 
-                <li><a href="includes/logout.php"><i class="ti-close"></i> Logout</a></li>
+                <li><a href="?action=logout"><i class="ti-close"></i> Logout</a></li>
             </ul>
         </div>
     </div>

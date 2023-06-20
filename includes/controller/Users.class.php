@@ -15,27 +15,30 @@ class Users
 
     public function getOne(int $userId): UserModel|bool
     {
-        $query = "SELECT * from users where user_id='" . intval($userId) . "';";
-        $result = $this->execQuery($query);
-        $user = $result->fetch();
+        $pdo = SPDO::getInstance();
+        $query = "SELECT * from users where user_id=:userId;";
+        $pdo->execPrepare($query);
+        $pdo->execBindValue(':userId', $userId, PDO::PARAM_INT);
+        $pdo->execQuery();
+        $user = $pdo->fetch();
         if (!$user){
             return false;
         }
+
         return new UserModel((object)$user);
     }
 
     public function getAll(): array|bool
     {
+        $pdo = SPDO::getInstance();
         $query = "SELECT * FROM users;";
-        $users = $this->execQuery($query);
+        $pdo->execQuery($query);
+        $users = $pdo->fetchAll();
         if (!$users) {
             return false;
         }
-        $return = [];
-        foreach ($users as $user) {
-            $return[] = new UserModel((object) $user);
-        }
-        return $return;
+
+        return new UserModel((object) $users);
     }
 
     public function addNew(array $user): PDOStatement|bool

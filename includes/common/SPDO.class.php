@@ -11,6 +11,7 @@ class SPDO
      * instance of PDO
      */
     private PDO $PDOInstance;
+    private PDOStatement $statement;
 
     /**
      * instance of SPDO
@@ -42,11 +43,30 @@ class SPDO
         return self::$instance;
     }
 
-    /**
-     * Execute an sql query
-     */
-    public function execQuery(string $query): PDOStatement
+    public function execPrepare(string $query): void
     {
-        return $this->PDOInstance->query($query);
+        $this->statement = $this->PDOInstance->prepare($query);
+    }
+
+    public function execBindValue(string $name, mixed $value, string $type): void
+    {
+        $this->statement->bindValue($name, $value, $type);
+    }
+
+    public function execQuery(bool $isOneRow = false): array|bool
+    {
+        if (!$this->statement->execute()) {
+            return false;
+        }
+        if ($isOneRow) {
+            return $this->statement->fetch();
+        }
+
+        return $this->statement->fetchAll();
+    }
+
+    public function getLastInsertedId(): ?int
+    {
+        return $this->PDOInstance->lastInsertId();
     }
 }

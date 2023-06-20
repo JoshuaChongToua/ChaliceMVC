@@ -51,7 +51,7 @@ class UsersTypes
         return $this->save($type);
     }
 
-    public function delete(int $typeId): PDOStatement
+    public function delete(array $array): PDOStatement
     {
         $typeModel = new TypesModel((object) ["type_id" => $typeId]);
 

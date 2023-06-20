@@ -132,25 +132,40 @@ class Users
 
     public function save(): PDOStatement|bool
     {
+        echo "<pre>" . print_r($this, true) . "</pre>";
+
         if (empty($this->userId) && empty($this->login) && empty($this->password) && empty($this->typeId) && empty($this->createDate)) {
             return false;
         }
 
         if (!empty($this->userId)) {
+            $pdo = SPDO::getInstance();
             $query = "UPDATE users SET 
-                 login = '" . $this->login . "', 
-                 password = '" . Helper::crypt($this->password) . "', 
-                 type_id = '" . $this->typeId . "'
-                 WHERE user_id = '" . $this->userId . "';
+                 login = :login, 
+                 password = :password, 
+                 type_id = :typeId
+                 WHERE user_id = :userId;
             ";
+            $pdo->execPrepare($query);
+            $pdo->execBindValue(':login', $this->login, PDO::PARAM_STR);
+            $pdo->execBindValue(':password', Helper::crypt($this->password), PDO::PARAM_STR);
+            $pdo->execBindValue(':typeId', $this->typeId, PDO::PARAM_STR);
+            $pdo->execBindValue(':userId', $this->userId, PDO::PARAM_INT);
+
         } else {
+            $pdo = SPDO::getInstance();
             $query = "INSERT INTO users (login, password, type_id) VALUES (
                                                      '" . $this->login . "',
                                                      '" . Helper::crypt($this->password) . "',
                                                      '" . $this->typeId . "'
 )";
+            $pdo->execPrepare($query);
+            $pdo->execBindValue(':login', $this->login, PDO::PARAM_STR);
+            $pdo->execBindValue(':password', Helper::crypt($this->password), PDO::PARAM_STR);
+            $pdo->execBindValue(':typeId', $this->typeId, PDO::PARAM_STR);
         }
-        return $this->execQuery($query);
+
+        return $pdo->execQuery();
     }
 
     public function delete(): PDOStatement|bool
@@ -158,9 +173,11 @@ class Users
         if (empty($this->userId)) {
             return false;
         }
-
-        $query = "DELETE FROM users WHERE user_id = $this->userId;";
-        return $this->execQuery($query);
+        $pdo = SPDO::getInstance();
+        $query = "DELETE FROM users WHERE user_id = :userId;";
+        $pdo->execPrepare($query);
+        $pdo->execBindValue(':userId', $this->userId, PDO::PARAM_INT);
+        return $pdo->execQuery($query);
     }
 
     private function execQuery(string $query): PDOStatement
