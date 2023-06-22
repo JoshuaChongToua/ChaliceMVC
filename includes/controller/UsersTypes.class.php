@@ -4,6 +4,7 @@ namespace controller;
 
 use common\SPDO;
 use model\UsersTypes as TypesModel;
+use PDO;
 use PDOStatement;
 use stdClass;
 
@@ -16,8 +17,10 @@ class UsersTypes
 
     public function getAll(): array|bool
     {
+        $pdo = SPDO::getInstance();
         $query = "SELECT * FROM users_types;";
-        $types = $this->execQuery($query);
+        $pdo->execPrepare($query);
+        $types = $pdo->execQuery();
         if (!$types) {
             return false;
         }
@@ -30,9 +33,11 @@ class UsersTypes
 
     public function getOne($typeId): TypesModel|bool
     {
-        $query = "SELECT * FROM users_types WHERE type_id ='" . intval($typeId) . "';";
-        $result = $this->execQuery($query);
-        $type = $result->fetch();
+        $pdo = SPDO::getInstance();
+        $query = "SELECT * FROM users_types WHERE type_id =:typeId;";
+        $pdo->execPrepare($query);
+        $pdo->execBindValue(':typeId', intval($typeId), PDO::PARAM_INT);
+        $type = $pdo->execQuery(true);
         //echo "<pre>" . print_r($type, true) . "</pre>";
 
         if (!$type) {
@@ -51,9 +56,9 @@ class UsersTypes
         return $this->save($type);
     }
 
-    public function delete(array $array): PDOStatement
+    public function delete(array $typeId): PDOStatement|bool
     {
-        $typeModel = new TypesModel((object) ["type_id" => $typeId]);
+        $typeModel = new TypesModel((object) ["type_id" => $typeId['type_id']]);
 
         return $typeModel->delete();
     }
@@ -76,11 +81,6 @@ class UsersTypes
 
 
 
-    private function execQuery(string $query): PDOStatement
-    {
-        $pdo = SPDO::getInstance();
 
-        return $pdo->execQuery($query);
-    }
 
 }

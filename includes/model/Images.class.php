@@ -4,6 +4,7 @@ namespace model;
 
 use common\Helper;
 use common\SPDO;
+use PDO;
 use PDOStatement;
 use stdClass;
 use controller\Images as ImageController;
@@ -76,6 +77,7 @@ class Images
     public function save(): PDOStatement|bool
     {
         //echo "<pre>" . print_r($this, true) . "</pre>";
+        $imageController = new ImageController();
 
         if (empty($this->imageId) && empty($this->name) && empty($this->createDate)) {
             return false;
@@ -83,30 +85,25 @@ class Images
         //echo "aaaaa";
 
         if (!empty($this->imageId)) {
+            $pdo = SPDO::getInstance();
             $query = "UPDATE images SET 
-                 name = '" . $this->name . "' 
-                 WHERE image_id = '" . $this->imageId. "';
-            ";
+                 name = :name 
+                 WHERE image_id = :imageId;";
+                 $pdo->execPrepare($query);
+                 $pdo->execBindValue(':name', $this->name, PDO::PARAM_STR);
+                 $pdo->execBindValue(':imageId', $this->imageId, PDO::PARAM_INT);
+
+
         } else {
+            $pdo = SPDO::getInstance();
+            $query = "INSERT INTO images (name) VALUES (:name);";
+            $pdo->execPrepare($query);
+            $pdo->execBindValue(':name', $this->name, PDO::PARAM_STR);
 
 
-                    $query = "INSERT INTO images (name) VALUES ('" . $filename . "');";
-                    $destination2 = 'includes/assets/images/upload/' .  . '.' . $fileExtension;
-
-                    if (rename($destination, $destination2)) {
-                        echo 'Fichier bien renomee';
-                    } else {
-                        echo 'echec';
-                    }
-                } else {
-                    echo "Une erreur s'est produite lors du téléchargement de l'image.";
-                }
-            } else {
-                echo "Le format de fichier n'est pas pris en charge. Veuillez sélectionner une image valide.";
-            }
         }
 
-        return $this->execQuery($query);
+        return $pdo->execStatement();
     }
 
 
@@ -115,29 +112,23 @@ class Images
         if (empty($this->imageId)) {
             return false;
         }
+        $pdo = SPDO::getInstance();
+        $query = "DELETE FROM images WHERE image_id = :imageId;";
+        $pdo->execPrepare($query);
+        $pdo->execBindValue(':imageId', $this->imageId, PDO::PARAM_INT);
 
-        $query = "DELETE FROM images WHERE image_id = $this->imageId;";
-        return $this->execQuery($query);
-    }
-
-    function getImage(string $id)
-    {
-        $imageDirectory = 'includes/assets/images/upload/';
-
-        foreach (['jpg', 'jpeg', 'png'] as $extension) {
-            if (file_exists($imageDirectory . $id . '.' . $extension)) {
-                return $imageDirectory . $id . '.' . $extension;
-            }
-        }
-        return $imageDirectory . "default.png";
+        return $pdo->execStatement(false, true);
     }
 
 
-    private function execQuery(string $query): PDOStatement
+
+
+    public function getLastInsertedId(): int
     {
         $pdo = SPDO::getInstance();
 
-        return $pdo->execQuery($query);
+        return $pdo->getLastInsertedId();
+
     }
 
 }

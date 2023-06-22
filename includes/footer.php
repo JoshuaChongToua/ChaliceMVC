@@ -48,16 +48,8 @@
 
         var getImageSelect = function (string)
         {
-            if (string == ""){
-                document.getElementById("test").innerHTML = "";
+            alert(2);
 
-            } else {
-                var imgElement = document.createElement("img");
-                var imgPath = "includes/assets/images/upload/" + string + ".jpg" ;
-                imgElement.src = imgPath;
-                document.getElementById("test").innerHTML = "";
-                document.getElementById("test").appendChild(imgElement);
-            }
         };
         var getImageProfileSelect = function (string)
         {

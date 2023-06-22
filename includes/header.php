@@ -4,7 +4,7 @@ use model\UsersTypes;
 
 function creerDossierUtilisateur($nomUtilisateur)
 {
-    $cheminDossier = "../assets/images/profiles/" . $nomUtilisateur;
+    $cheminDossier = "includes/assets/images/profiles/" . $nomUtilisateur;
 
     if (!file_exists($cheminDossier)) {
         // Créer le dossier avec les permissions appropriées (par exemple, 0777 pour des permissions complètes)
@@ -17,7 +17,7 @@ creerDossierUtilisateur($_SESSION['user_id']);
 
 $isLaragon = "";
 if ($_SERVER['HTTP_HOST'] == "localhost") {
-    $isLaragon = "/Chalice";
+    $isLaragon = "/chaliceMVC";
 }
 ?>
 
@@ -74,7 +74,7 @@ if ($_SERVER['HTTP_HOST'] == "localhost") {
 
                             <li><a href="?view=user">Liste Users</a></li>
                             <li><a href="?view=user&action=add">Add User</a></li>
-                            <li><a href="profiles.php">Profile</a></li>
+                            <li><a href="?view=profile">Profile</a></li>
 
                         </ul>
                     </li>
@@ -82,8 +82,8 @@ if ($_SERVER['HTTP_HOST'] == "localhost") {
                 <li><a class="sidebar-sub-toggle"><i class="ti-files"></i> News <span
                                 class="sidebar-collapse-icon ti-angle-down"></span></a>
                     <ul>
-                        <li><a href="news.php">Liste News</a></li>
-                        <li><a href="news.php?action=create">Add News</a></li>
+                        <li><a href="?view=news">Liste News</a></li>
+                        <li><a href="?view=news&action=add">Add News</a></li>
                     </ul>
                 </li>
                 <?php

@@ -6,7 +6,7 @@ function getImageSelect (string)
     } else {
 
             var imgElement = document.createElement("img");
-            var imgPath = "../assets/images/upload/" + string + ".jpg";
+            var imgPath = "includes/assets/images/upload/" + string + ".jpg";
             imgElement.src = imgPath;
             document.getElementById("test").innerHTML = "";
             document.getElementById("test").appendChild(imgElement);
@@ -22,7 +22,7 @@ function getImageProfileSelect (string)
     } else {
         var imgElement = document.createElement("img");
         const id = document.getElementById("user_id").value;
-        var imgPath = "../assets/images/profiles/"+ id + "/" + string + ".jpg" ;
+        var imgPath = "includes/assets/images/profiles/"+ id + "/" + string + ".jpg" ;
         imgElement.src = imgPath;
         console.log("Chemin de l'image : " + imgElement.src);
 

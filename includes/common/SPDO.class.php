@@ -55,15 +55,28 @@ class SPDO
 
     public function execQuery(bool $isOneRow = false): array|bool
     {
-        if (!$this->statement->execute()) {
+        if (!$this->execStatement()) {
             return false;
         }
+
+
         if ($isOneRow) {
             return $this->statement->fetch();
         }
 
         return $this->statement->fetchAll();
     }
+
+    public function execStatement(): bool
+    {
+        if (!$this->statement->execute()) {
+            return false;
+        }
+
+        return true;
+    }
+
+
 
     public function getLastInsertedId(): ?int
     {

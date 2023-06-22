@@ -2,22 +2,22 @@
 
 namespace controller;
 use common\SPDO;
-use model\Users as UsersModel;
-use controller\UsersTypes as UsersTypesController;
+use model\Profile as ProfileModel;
 use PDO;
 use PDOStatement;
 use stdClass;
-class Users
+
+class Profile
 {
 
     public function __construct()
     {
     }
 
-    public function getOne(int $userId): UsersModel|bool
+    public function getOne(int $userId): ProfileModel|bool
     {
         $pdo = SPDO::getInstance();
-        $query = "SELECT * from users where user_id=:userId;";
+        $query = "SELECT * from profile where user_id=:userId;";
         $pdo->execPrepare($query);
         $pdo->execBindValue(':userId', $userId, PDO::PARAM_INT);
         $user = $pdo->execQuery(true);
@@ -25,13 +25,13 @@ class Users
             return false;
         }
 
-        return new UsersModel((object)$user);
+        return new ProfileModel((object)$user);
     }
 
     public function getAll(): array|bool
     {
         $pdo = SPDO::getInstance();
-        $query = "SELECT * FROM users;";
+        $query = "SELECT * FROM profile;";
         $pdo->execPrepare($query);
         $users = $pdo->execQuery();
         if (!$users) {
@@ -40,7 +40,7 @@ class Users
 
         $return = [];
         foreach ($users as $user) {
-            $return[] = new UsersModel((object) $user);
+            $return[] = new ProfileModel((object) $user);
         }
 
         return $return;
@@ -58,46 +58,21 @@ class Users
 
     public function delete(array $userId): PDOStatement|bool
     {
-        $userModel = new UsersModel((object) ["user_id" => $userId['user_id']]);
+        $userModel = new ProfileModel((object) ["user_id" => $userId['user_id']]);
 
         return $userModel->delete();
     }
 
     private function save(array $user): PDOStatement|bool
     {
-        $userModel = new UsersModel((object) $user);
+        $userModel = new ProfileModel((object) $user);
 
         return $userModel->save();
     }
-
-
-
-    public function getRole(int $userTypeId): ?string
-    {
-        $userTypeController = new UsersTypesController();
-        $role = $userTypeController->getOne($userTypeId);
-        //var_dump($role);
-
-        if ($role === false) {
-            return null;
-        }
-
-        return $role->getRole();
-    }
-
-
-
-
     public function verifyForm(array $array): bool
     {
         //echo "<pre>" . print_r($array, true) . "</pre>";
 
-        if (!isset($array['login']) && !isset($array['password']) && !isset($array['type_id'])) {
-            return false;
-        }
-
         return true;
     }
-
-
 }

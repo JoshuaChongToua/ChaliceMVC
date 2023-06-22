@@ -1,6 +1,7 @@
 <?php
 
 namespace view;
+use common\Helper;
 use controller\Images as ImagesController;
 
 class Images
@@ -53,7 +54,7 @@ class Images
 
             $return .= '<tr class="jsgrid-align-center" style="display: table-row;">
             <td style="width: 150px;">
-            <img id="imageTab" src="' . $this->imageController->getImage($imageItem->getImageId()) . '" alt="Image" title="' . $imageItem->getName() . '">' . PHP_EOL .'
+            <img id="imageTab" src="' . Helper::getImage($imageItem->getImageId(), Helper::IMG_DIR_UPLOAD) . '" alt="Image" title="' . $imageItem->getName() . '">' . PHP_EOL .'
             </td>
             <td style="width: 150px;">' . $imageItem->getImageId() . '</td>
             <td style="width: 150px;">' . $imageItem->getName() . '</td>
@@ -87,9 +88,9 @@ class Images
     }
 
 
-    public function getForm(string $action, int $imageId = null): string
+    public function getForm(array $action): string
     {
-        if (isset($imageId)) {
+        if (isset($action['image_id'])) {
             $image = $this->imageController->getOne($_GET['image_id']);
             //echo "<pre>" . print_r($userInfo, true) . "</pre>";
         }
@@ -105,24 +106,24 @@ class Images
                                 <div class="card-body">
                                     <div class="form-validation">
                                         
-    <form class="form-valide" name="imageForm" action="?view=image&action=' . $action . '" method="POST" enctype="multipart/form-data" onsubmit= "return validateForm(\'imageForm\',\'imageTitle\');" onkeypress="verifierCaracteres(event); return false;">
+    <form class="form-valide" name="imageForm" action="?view=image&action=' . $action['action'] . '" method="POST" enctype="multipart/form-data" onsubmit= "return validateForm(\'imageForm\',\'imageTitle\');" onkeypress="verifierCaracteres(event); return false;">
             <div class="form-group row ">                             
         <label class="col-lg-3 col-form-label" for="title">Title :<span class="text-danger">*</span></label>
         <div class="col-lg-9">
-        <input class="form-control" type="text" name="name" placeholder="imageTitle" autocomplete="off" value="' . ($action == 'update' ? $image->getName() : '') . '">
+        <input class="form-control" type="text" name="name" placeholder="imageTitle" autocomplete="off" value="' . ($action['action'] == 'update' ? $image->getName() : '') . '">
         </div>
     </div>
         
         <br>';
-        if ($action != 'update') {
+        if ($action['action'] != 'update') {
             $return .= '
         <input type="file" name="image" >';
         }
         $return .= '<br>
-        <input type="hidden" name="image_id" value="' . ($action == 'update' ? $image->getImageId() : '') . '" >
+        <input type="hidden" name="image_id" value="' . ($action['action'] == 'update' ? $image->getImageId() : '') . '" >
         <br>
         
-        <a class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" href="images.php"><i class="ti-back-left"></i></span>Retour</a>
+        <a class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" href="?view=image"><i class="ti-back-left"></i></span>Retour</a>
         <button type="submit" name="submit"  class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
     </form>
     </div>

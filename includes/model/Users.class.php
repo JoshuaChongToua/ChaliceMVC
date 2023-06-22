@@ -4,6 +4,7 @@ namespace model;
 
 use common\Helper;
 use common\SPDO;
+use PDO;
 use PDOStatement;
 use stdClass;
 class Users
@@ -49,9 +50,7 @@ class Users
         ];
     }
 
-    /**
-     * @return int
-     */
+
     public function getUserId(): int
     {
         return $this->userId;
@@ -130,9 +129,9 @@ class Users
     }
 
 
-    public function save(): PDOStatement|bool
+    public function save()
     {
-        echo "<pre>" . print_r($this, true) . "</pre>";
+        //echo "<pre>" . print_r($this, true) . "</pre>";
 
         if (empty($this->userId) && empty($this->login) && empty($this->password) && empty($this->typeId) && empty($this->createDate)) {
             return false;
@@ -149,23 +148,23 @@ class Users
             $pdo->execPrepare($query);
             $pdo->execBindValue(':login', $this->login, PDO::PARAM_STR);
             $pdo->execBindValue(':password', Helper::crypt($this->password), PDO::PARAM_STR);
-            $pdo->execBindValue(':typeId', $this->typeId, PDO::PARAM_STR);
+            $pdo->execBindValue(':typeId', $this->typeId, PDO::PARAM_INT);
             $pdo->execBindValue(':userId', $this->userId, PDO::PARAM_INT);
 
         } else {
             $pdo = SPDO::getInstance();
             $query = "INSERT INTO users (login, password, type_id) VALUES (
-                                                     '" . $this->login . "',
-                                                     '" . Helper::crypt($this->password) . "',
-                                                     '" . $this->typeId . "'
+                                                     :login,
+                                                     :password,
+                                                     :typeId
 )";
             $pdo->execPrepare($query);
             $pdo->execBindValue(':login', $this->login, PDO::PARAM_STR);
             $pdo->execBindValue(':password', Helper::crypt($this->password), PDO::PARAM_STR);
-            $pdo->execBindValue(':typeId', $this->typeId, PDO::PARAM_STR);
+            $pdo->execBindValue(':typeId', $this->typeId, PDO::PARAM_INT);
         }
 
-        return $pdo->execQuery();
+        return $pdo->execStatement();
     }
 
     public function delete(): PDOStatement|bool
@@ -177,14 +176,10 @@ class Users
         $query = "DELETE FROM users WHERE user_id = :userId;";
         $pdo->execPrepare($query);
         $pdo->execBindValue(':userId', $this->userId, PDO::PARAM_INT);
-        return $pdo->execQuery($query);
+
+        return $pdo->execStatement();
     }
 
-    private function execQuery(string $query): PDOStatement
-    {
-        $pdo = SPDO::getInstance();
 
-        return $pdo->execQuery($query);
-    }
 }
 

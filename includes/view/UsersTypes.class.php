@@ -78,9 +78,9 @@ class UsersTypes
         return $return;
     }
 
-    public function getForm(string $action, int $typeId = null): string
+    public function getForm(array $action): string
     {
-        if (isset($typeId)) {
+        if (isset($action['type_id'])) {
             $typeInfo = $this->usersTypesController->getOne($_GET['type_id']);
             //echo "<pre>" . print_r($userInfo, true) . "</pre>";
         }
@@ -96,20 +96,20 @@ class UsersTypes
                                 <div class="card-body">
                                     <div class="form-validation">
     
-    <form class="form-valide" name="typeForm" method="POST" action="?view=type&action=' . $action . '"  onkeypress="verifierCaracteres(event); return false;">
+    <form class="form-valide" name="typeForm" method="POST" action="?view=type&action=' . $action['action'] . '"  onkeypress="verifierCaracteres(event); return false;">
         
         <div class="form-group row ">                             
          <label class="col-lg-3 col-form-label" for="login">Role :<span class="text-danger">*</span></label>
          <div class="col-lg-9">
-        <input class="form-control" type="text" name="role" value="' . ($action == 'update' ? $typeInfo->getRole() : '') . '"  />
+        <input class="form-control" type="text" name="role" value="' . ($action['action'] == 'update' ? $typeInfo->getRole() : '') . '"  />
         </div>
     </div>
     
         <br>
         
-        <input type="hidden" name="type_id" value="' . ($action == 'update' ? $typeInfo->getTypeId() : '' ) . '">
+        <input type="hidden" name="type_id" value="' . ($action['action'] == 'update' ? $typeInfo->getTypeId() : '' ) . '">
         <br>
-        <a class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" href="types.php"><i class="ti-back-left"></i></span>Retour</a>
+        <a class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" href="?view=type"><i class="ti-back-left"></i></span>Retour</a>
         <button type="submit" name="submit"  class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
 
     </form>

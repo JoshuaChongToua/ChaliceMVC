@@ -7,6 +7,8 @@ use controller\Login as LoginController;
 use view\Dashboard as DashboardView ;
 use view\Images as ImageView ;
 use view\Login as LoginView;
+use view\News as NewsView;
+use view\Profile as ProfileView;
 use view\Users as UserView;
 use view\UsersTypes as UserTypesView;
 
@@ -15,10 +17,7 @@ class Parser
 {
     private string $display = '';
 
-	/**
-	 * @param array $get
-	 * @param array $post
-	 */
+
     public function __construct(array $get, array $post)
     {
         $this->parse($get, $post);
@@ -68,6 +67,7 @@ class Parser
                 'news' => new NewsView(),
                 'type' => new UserTypesView(),
                 'image' => new ImageView(),
+                'profile' => new ProfileView(),
                 default => new DashboardView()
             };
 
@@ -123,6 +123,8 @@ class Parser
                         }
                     } else if (isset($get)) {
                         $this->display = $view->getForm($get);
+                        //echo "<pre>" . print_r($get, true) . "</pre>";
+
                         return;
                     }
                 } else if ($get['action'] == 'delete') {

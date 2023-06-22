@@ -91,9 +91,9 @@ class Users
 
 
 
-    public function getForm(string $action, int $userId = null): string
+    public function getForm(array $action): string
     {
-        if (isset($userId)) {
+        if (isset($action['user_id'])) {
             $userInfo = $this->controller->getOne($_GET['user_id']);
             //echo "<pre>" . print_r($userInfo, true) . "</pre>";
         }
@@ -115,12 +115,12 @@ class Users
                                         
                                                 
                                                     
-    <form class="form-valide" name="userForm" method="POST" action="?view=user&action=' . $action . '"  >
+    <form class="form-valide" name="userForm" method="POST" action="?view=user&action=' . $action['action'] . '"  >
     
     <div class="form-group row ">                             
         <label class="col-lg-3 col-form-label" for="login">Login :<span class="text-danger">*</span></label>
         <div class="col-lg-9">
-         <input class="form-control" type="text" id="login" name="login"  value="' . ($action == 'update' ? $userInfo->getLogin() : '') . '" onkeypress="verifierCaracteres(event); return false;"/>
+         <input class="form-control" type="text" id="login" name="login"  value="' . ($action['action'] == 'update' ? $userInfo->getLogin() : '') . '" onkeypress="verifierCaracteres(event); return false;"/>
          </div>
     </div>
          
@@ -129,13 +129,13 @@ class Users
         <div class="form-group row ">                             
         <label class="col-lg-3 col-form-label" for="password">Password :<span class="text-danger">*</span></label>
         <div class="col-lg-9">
-        <input class="form-control" id="password" type="password" name="password"  value="' . ($action == 'update' ? $userInfo->getPassword() : '') . '">
+        <input class="form-control" id="password" type="password" name="password"  value="' . ($action['action'] == 'update' ? $userInfo->getPassword() : '') . '">
         </div>
         </div>
         
         <br>
         
-        <input type="hidden" name="user_id" value="' . ($action == 'update' ? $userInfo->getUserId() : '') . '">
+        <input type="hidden" name="user_id" value="' . ($action['action'] == 'update' ? $userInfo->getUserId() : '') . '">
         
        
                <div class="form-group row ">                             
@@ -145,7 +145,7 @@ class Users
             <select class="form-control" name="type_id">';
     foreach ($usersTypesCollection as $type) {
 
-        $return .= '<option value ="' . $type->getTypeId() . '"' . ($action == 'update' ? $type->getTypeId() : '') . ' >' . $type->getRole() . '</option>';
+        $return .= '<option value ="' . $type->getTypeId() . '"' . ($action['action'] == 'update' ? $type->getTypeId() : '') . ' >' . $type->getRole() . '</option>';
 
     }
 

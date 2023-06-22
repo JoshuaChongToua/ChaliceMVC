@@ -5,6 +5,7 @@ namespace controller;
 use common\Helper;
 use common\SPDO;
 use model\Users as UserModel;
+use PDO;
 use PDOStatement;
 
 class Login
@@ -35,9 +36,11 @@ class Login
 
     private function getVerification($login, $password): UserModel|bool
     {
-        $query = "SELECT * FROM users WHERE login='" . $login . "'";
-        $result = $this->execQuery($query);
-        $user = $result->fetch();
+        $pdo = SPDO::getInstance();
+        $query = "SELECT * FROM users WHERE login=:login";
+        $pdo->execPrepare($query);
+        $pdo->execBindValue(':login', $login, PDO::PARAM_STR);
+        $user = $pdo->execQuery(true);
         //echo "<pre>" . print_r($user, true) . "</pre>";
         //echo $user['password'];
 
@@ -57,10 +60,5 @@ class Login
         return true;
     }
 
-    private function execQuery(string $query): PDOStatement
-    {
-        $pdo = SPDO::getInstance();
 
-        return $pdo->execQuery($query);
-    }
 }

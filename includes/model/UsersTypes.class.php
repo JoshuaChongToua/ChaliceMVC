@@ -4,6 +4,7 @@ namespace model;
 
 use common\Helper;
 use common\SPDO;
+use PDO;
 use PDOStatement;
 use stdClass;
 class UsersTypes
@@ -58,23 +59,29 @@ class UsersTypes
         $this->role = $role;
     }
 
-    public function save(): PDOStatement|bool
+    public function save()
     {
         if (empty($this->typeId) && empty($this->role) ) {
             return false;
         }
 
         if (!empty($this->typeId)) {
+            $pdo = SPDO::getInstance();
             $query = "UPDATE users_types SET 
-                 role = '" . $this->role . "'
-                 WHERE type_id = '" . $this->typeId . "';
+                 role = :role
+                 WHERE type_id = :typeId;
             ";
+            $pdo->execPrepare($query);
+            $pdo->execBindValue(':role', $this->role, PDO::PARAM_STR);
+            $pdo->execBindValue(':typeId', $this->typeId, PDO::PARAM_INT);
         } else {
-            $query = "INSERT INTO users_types (role) VALUES (
-                                                     '" . $this->role . "'
-)";
+            $pdo = SPDO::getInstance();
+            $query = "INSERT INTO users_types (role) VALUES (:role)";
+            $pdo->execPrepare($query);
+            $pdo->execBindValue(':role', $this->role, PDO::PARAM_STR);
+
         }
-        return $this->execQuery($query);
+        return $pdo->execStatement();
     }
 
     public function delete(): PDOStatement|bool
@@ -82,14 +89,13 @@ class UsersTypes
         if (empty($this->typeId)) {
             return false;
         }
-
-        $query = "DELETE FROM users_types WHERE type_id = $this->typeId;";
-        return $this->execQuery($query);
-    }
-    private function execQuery(string $query): PDOStatement
-    {
         $pdo = SPDO::getInstance();
+        $query = "DELETE FROM users_types WHERE type_id = :typeId;";
+        $pdo->execPrepare($query);
+        $pdo->execBindValue(':typeId', $this->typeId, PDO::PARAM_INT);
 
-        return $pdo->execQuery($query);
+
+        return $pdo->execStatement();
     }
+
 }
