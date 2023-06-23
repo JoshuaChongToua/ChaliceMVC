@@ -58,16 +58,16 @@ class Profile
 
     public function delete(array $userId): PDOStatement|bool
     {
-        $userModel = new ProfileModel((object) ["user_id" => $userId['user_id']]);
+        $profileModel = new ProfileModel((object) ["user_id" => $userId['user_id']]);
 
-        return $userModel->delete();
+        return $profileModel->delete();
     }
 
     private function save(array $user): PDOStatement|bool
     {
-        $userModel = new ProfileModel((object) $user);
+        $profileModel = new ProfileModel((object) $user);
 
-        return $userModel->save();
+        return $profileModel->save();
     }
     public function verifyForm(array $array): bool
     {

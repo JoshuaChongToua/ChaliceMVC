@@ -116,7 +116,6 @@ class Parser
                             $this->display = "Error: failed to post data";
                             return;
                         }
-
                         if (!$controller->update($post)) {
                             $this->display = "Error: failed update data in database";
                             return;

@@ -28,28 +28,26 @@ class Profile
             $this->userId =  intval($user->user_id);
         }
         if (property_exists($user, 'name')) {
-            $this->name = $user->name;
-        } else {
             $this->name = "";
         }
         if (property_exists($user, 'firstName')) {
-            $this->firstName = $user->firstName;
+            $this->firstName = "";
         }
         if (property_exists($user, 'phone')) {
-            $this->phone = intval($user->phone);
+            $this->phone = "";
         }
         if (property_exists($user, 'address')) {
-            $this->address = $user->address;
+            $this->address = "";
         }
         if (property_exists($user, 'email')) {
-            $this->email = $user->email;
+            $this->email = "";
         }
         if (property_exists($user, 'city')) {
-            $this->city = $user->city;
+            $this->city = "";
         }
-        if (property_exists($user, 'imageId')) {
-            $this->imageId = $user->imageId;
-        }
+        /*if (property_exists($user, 'image_id')) {
+            $this->imageId = intval($user->imageId);
+        }*/
 
     }
 
@@ -166,11 +164,11 @@ class Profile
 
     public function save()
     {
-        //echo "<pre>" . print_r($this, true) . "</pre>";
 
-        if (empty($this->userId) && empty($this->name) && empty($this->firstName) && empty($this->phone) && empty($this->address) && empty($this->email) && empty($this->city) && empty($this->imageId)) {
+        if (empty($this->userId) && empty($this->name) && empty($this->firstName) && empty($this->phone) && empty($this->address) && empty($this->email) && empty($this->city) ) {
             return false;
         }
+        //echo "<pre>" . print_r($this->userId, true) . "</pre>";
 
         if (!empty($this->userId)) {
             $pdo = SPDO::getInstance();
@@ -180,19 +178,19 @@ class Profile
                  phone = :phone,
                  address = :address,
                  email = :email,
-                 city = :city,
-                 imageId = :imageId,
+                 city = :city
+                 
                  WHERE user_id = :userId;
             ";
             $pdo->execPrepare($query);
-            $pdo->execBindValue(':name', $this->name, PDO::PARAM_STR);
-            $pdo->execBindValue(':firstname', $this->firstName, PDO::PARAM_STR);
-            $pdo->execBindValue(':phone', $this->phone, PDO::PARAM_STR);
-            $pdo->execBindValue(':address', $this->address, PDO::PARAM_STR);
-            $pdo->execBindValue(':email', $this->email, PDO::PARAM_STR);
-            $pdo->execBindValue(':city', $this->city, PDO::PARAM_STR);
-            $pdo->execBindValue(':imageId', $this->imageId, PDO::PARAM_INT);
-            $pdo->execBindValue(':userId', $this->userId, PDO::PARAM_INT);
+            $pdo->execBindValue(':name', $this->name ?? "", PDO::PARAM_STR);
+            $pdo->execBindValue(':firstname', $this->firstName ?? "", PDO::PARAM_STR);
+            $pdo->execBindValue(':phone', $this->phone ?? "", PDO::PARAM_STR);
+            $pdo->execBindValue(':address', $this->address ?? "", PDO::PARAM_STR);
+            $pdo->execBindValue(':email', $this->email ?? "", PDO::PARAM_STR);
+            $pdo->execBindValue(':city', $this->city ?? "", PDO::PARAM_STR);
+            //$pdo->execBindValue(':imageId', $this->imageId ?? "", PDO::PARAM_INT);
+            $pdo->execBindValue(':userId', $this->userId ?? "" , PDO::PARAM_INT);
 
         }
 

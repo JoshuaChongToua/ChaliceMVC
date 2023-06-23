@@ -70,9 +70,10 @@ class SPDO
     public function execStatement(): bool
     {
         if (!$this->statement->execute()) {
+            echo "1";
             return false;
         }
-
+        echo "2";
         return true;
     }
 
@@ -81,5 +82,10 @@ class SPDO
     public function getLastInsertedId(): ?int
     {
         return $this->PDOInstance->lastInsertId();
+    }
+
+    public function getLastError(): array
+    {
+        return $this->PDOInstance->errorInfo();
     }
 }
