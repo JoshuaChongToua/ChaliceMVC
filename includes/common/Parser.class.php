@@ -5,6 +5,7 @@ namespace common;
 use controller\Users as UserController;
 use controller\Login as LoginController;
 use view\Dashboard as DashboardView ;
+use view\ImagesProfile as ImagesProfileView ;
 use view\Images as ImageView ;
 use view\Login as LoginView;
 use view\News as NewsView;
@@ -68,12 +69,18 @@ class Parser
                 'type' => new UserTypesView(),
                 'image' => new ImageView(),
                 'profile' => new ProfileView(),
+                'gestionImageProfile' => new ImagesProfileView(),
                 default => new DashboardView()
             };
 
             if ($view instanceof DashboardView) {
                 $this->display = $view->getLandingPage();
 
+                return;
+            }
+            if ($view instanceof ImagesProfileView && empty($get['action'])) {
+                $view = new ProfileView();
+                $this->display = $view->getTable();
                 return;
             }
 

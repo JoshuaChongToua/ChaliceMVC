@@ -70,10 +70,8 @@ class SPDO
     public function execStatement(): bool
     {
         if (!$this->statement->execute()) {
-            echo "1";
             return false;
         }
-        echo "2";
         return true;
     }
 

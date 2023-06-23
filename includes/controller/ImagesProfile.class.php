@@ -3,87 +3,87 @@
 namespace controller;
 
 use common\SPDO;
-use model\Images as ImagesModel;
+use model\ImagesProfile as ImagesProfilesModel;
 use PDO;
 use PDOStatement;
 use stdClass;
 
-class Images
+class ImagesProfile
 {
-
-    public const ACTION_ADD = "add";
-    public const ACTION_UPDATE = "update";
-    public const ACTION_DELETE = "delete";
-
     public function __construct()
     {
     }
 
-    public function getOne(int $imageId): ImagesModel|bool
+    public function getOne(int $imageId): ImagesProfilesModel|bool
     {
         $pdo = SPDO::getInstance();
-        $query = "SELECT * from images where image_id=:imageId;";
+        $query = "SELECT * from images_profile where image_id=:imageId;";
         $pdo->execPrepare($query);
         $pdo->execBindValue(':imageId', $imageId, PDO::PARAM_INT);
         $image = $pdo->execQuery(true);
+
         if (!$image) {
             return false;
         }
 
-        return new ImagesModel((object)$image);
+        return new ImagesProfilesModel((object)$image);
     }
 
-    public function getAll(): array|bool
+
+    public function getAll(int $userId = null): array|bool
     {
         $pdo = SPDO::getInstance();
-        $query = "SELECT * FROM images;";
+        $query = "SELECT * FROM images_profile ";
+        if (!empty($userId)) {
+            $query .= "WHERE user_id = :userId;";
+        }
         $pdo->execPrepare($query);
+        if (!empty($userId)) {
+            $pdo->execBindValue(':userId', $userId, PDO::PARAM_INT);
+        }
         $images = $pdo->execQuery();
+        
         if (!$images) {
             return false;
         }
         $return = [];
         foreach ($images as $image) {
-            $return[] = new ImagesModel((object)$image);
+            $return[] = new ImagesProfilesModel((object)$image);
         }
 
         return $return;
     }
 
-
     public function addNew(array $image): PDOStatement|bool
     {
-        return $this->save($image, self::ACTION_ADD);
+        return $this->save($image);
     }
 
     public function update(array $image): PDOStatement|bool
     {
-        return $this->save($image, self::ACTION_UPDATE);
+        return $this->save($image);
     }
 
     public function delete(array $imageId): PDOStatement|bool
     {
-        $imageModel = new ImagesModel((object)["image_id" => $imageId['image_id']]);
-        $this->delImage($imageModel->getImageId());
-        return $imageModel->delete();
+        $ImagesProfileModel = new ImagesProfilesModel((object)["image_id" => $imageId['image_id']]);
+        //$this->delImage($ImagesProfileModel->getImageId());
+        return $ImagesProfileModel->delete();
     }
 
-    private function save(array $image, string $action): PDOStatement|bool
+    private function save(array $image): PDOStatement|bool
     {
-        $imageModel = new ImagesModel((object)$image);
-        if (!$imageModel->save()) {
+        $ImagesProfileModel = new ImagesProfilesModel((object)$image);
+        if (!$ImagesProfileModel->save()) {
             return false;
         }
-        if ($action == self::ACTION_UPDATE) {
-            return true;
-        }
 
-        return $this->addImage($imageModel->getLastInsertedId());
+        return $this->addImage($_SESSION['user_id'], $ImagesProfileModel->getLastInsertedId());
     }
 
     public function verifyForm(array $array): bool
     {
-        if (!isset($array['name'])) {
+        if (!isset($array['image_id']) && !isset($array['user_id'])) {
             //var_dump($array);
             return false;
         }
@@ -101,29 +101,30 @@ class Images
         return $string;
     }
 
-    private function addImage(int $lastInsertId): bool
+    private function addImage(int $userId, int $lastInsertedId): bool
     {
         $file = $_FILES['image'];
         $tmpFilePath = $file['tmp_name'];
         $allowedExtensions = ['jpg', 'jpeg', 'png'];
         $fileExtension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-        $destination = 'includes/assets/images/upload/' . $this->kodex_random_string($length = 10) . '.' . $fileExtension;
-        if (!in_array($fileExtension, $allowedExtensions)) {
-            //echo "Le format de fichier n'est pas pris en charge. Veuillez sélectionner une image valide.";
-            return false;
-        }
 
-        if (!move_uploaded_file($tmpFilePath, $destination)) {
-            //echo "Une erreur s'est produite lors du téléchargement de l'image.";
+        $destination = 'includes/assets/images/profiles/' . $userId . '/' . $this->kodex_random_string($length = 10) . '.' . $fileExtension;
+
+        if (!in_array($fileExtension, $allowedExtensions)) {
             return false;
         }
-        $destination2 = 'includes/assets/images/upload/' . $lastInsertId . '.' . $fileExtension;
-        if (!rename($destination, $destination2)) {
+        if (!move_uploaded_file($tmpFilePath, $destination)) {
+            // Le fichier a été téléchargé avec succès, vous pouvez effectuer d'autres actions si nécessaire
+            //echo "L'image a été téléchargée avec succès.";
+            return false;
+        }
+        $destination2 = 'includes/assets/images/profiles/' . $userId . '/' . $lastInsertedId . '.' . $fileExtension;
+        if (!rename($destination, $destination2))
+        {
             return false;
         }
 
         return true;
-
     }
 
     private function delImage(int $imageId): bool
@@ -131,7 +132,7 @@ class Images
         $image = $this->getOne($imageId);
         if ($image) {
             $allowedExtensions = ['jpg', 'jpeg', 'png'];
-            $filename = $image->getImageId();
+            $filename = $imageId;
             $fileCollection = glob('includes/assets/images/upload/' . $filename . '.*');
             $tempPath = 'includes/assets/images/upload/' . $filename;
             foreach ($fileCollection as $filePath) {
@@ -139,7 +140,7 @@ class Images
                 foreach ($allowedExtensions as $extension) {
 
                     if ($tempPath . '.' . $extension == $filePath) {
-                        $filename = $image->getImageId() . '.' . $extension;
+                        $filename = $imageId . '.' . $extension;
                         //echo "<pre>" . print_r($filename, true) . "</pre>";
                     }
 
@@ -163,6 +164,8 @@ class Images
         }
         return false;
     }
+
+
 
 
 }

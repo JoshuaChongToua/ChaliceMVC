@@ -1,3 +1,6 @@
+</div>
+</div>
+
 <script src="includes/assets/js/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.tiny.cloud/1/7z35pqy407ei7ctvi0ioouusk8zni4ikprha2ndun8v5qign/tinymce/6/tinymce.min.js"
         referrerpolicy="origin"></script>

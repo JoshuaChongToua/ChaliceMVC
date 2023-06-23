@@ -139,7 +139,7 @@ class Profile
        
         
         
-        Profile Image Management: <a href="gestionImageProfile.php?user_id=' . $profileUserData->getUserId() . '"><button type="button" class="btn btn-primary btn-sm btn-addon m-b-5 m-l-5"><i class="ti-plus"></i>Management</button>
+        Profile Image Management: <a href="?view=gestionImageProfile&action=add&user_id=' . $profileUserData->getUserId() . '"><button type="button" class="btn btn-primary btn-sm btn-addon m-b-5 m-l-5"><i class="ti-plus"></i>Management</button>
 </a>
         <br>
         

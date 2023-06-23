@@ -11,12 +11,12 @@ use stdClass;
 class Profile
 {
     private int $userId;
-    private string $name;
-    private string $firstName;
-    private string $phone;
-    private string $address;
-    private string $email;
-    private string $city;
+    private ?string $name;
+    private ?string $firstName;
+    private ?string $phone;
+    private ?string $address;
+    private ?string $email;
+    private ?string $city;
     private int $imageId;
 
     public function __construct(StdClass $user)
@@ -28,22 +28,22 @@ class Profile
             $this->userId =  intval($user->user_id);
         }
         if (property_exists($user, 'name')) {
-            $this->name = "";
+            $this->name = $user->name;
         }
         if (property_exists($user, 'firstName')) {
-            $this->firstName = "";
+            $this->firstName = $user->firstName;
         }
         if (property_exists($user, 'phone')) {
-            $this->phone = "";
+            $this->phone = $user->phone;
         }
         if (property_exists($user, 'address')) {
-            $this->address = "";
+            $this->address = $user->address;
         }
         if (property_exists($user, 'email')) {
-            $this->email = "";
+            $this->email = $user->email;
         }
         if (property_exists($user, 'city')) {
-            $this->city = "";
+            $this->city = $user->city;
         }
         /*if (property_exists($user, 'image_id')) {
             $this->imageId = intval($user->imageId);
@@ -191,7 +191,6 @@ class Profile
             $pdo->execBindValue(':city', $this->city ?? "", PDO::PARAM_STR);
             //$pdo->execBindValue(':imageId', $this->imageId ?? "", PDO::PARAM_INT);
             $pdo->execBindValue(':userId', $this->userId ?? "" , PDO::PARAM_INT);
-
         }
 
         return $pdo->execStatement();
