@@ -42,7 +42,7 @@ class ImagesProfile
             $pdo->execBindValue(':userId', $userId, PDO::PARAM_INT);
         }
         $images = $pdo->execQuery();
-        
+
         if (!$images) {
             return false;
         }
@@ -67,7 +67,8 @@ class ImagesProfile
     public function delete(array $imageId): PDOStatement|bool
     {
         $ImagesProfileModel = new ImagesProfilesModel((object)["image_id" => $imageId['image_id']]);
-        //$this->delImage($ImagesProfileModel->getImageId());
+        $this->delImage($_SESSION['user_id'], $ImagesProfileModel->getImageId());
+
         return $ImagesProfileModel->delete();
     }
 
@@ -119,24 +120,24 @@ class ImagesProfile
             return false;
         }
         $destination2 = 'includes/assets/images/profiles/' . $userId . '/' . $lastInsertedId . '.' . $fileExtension;
-        if (!rename($destination, $destination2))
-        {
+        if (!rename($destination, $destination2)) {
             return false;
         }
 
         return true;
     }
 
-    private function delImage(int $imageId): bool
+    private function delImage(int $userId, int $imageId): bool
     {
         $image = $this->getOne($imageId);
+        //echo "<pre>" . print_r($image, true) . "</pre>";
+
         if ($image) {
             $allowedExtensions = ['jpg', 'jpeg', 'png'];
             $filename = $imageId;
-            $fileCollection = glob('includes/assets/images/upload/' . $filename . '.*');
-            $tempPath = 'includes/assets/images/upload/' . $filename;
+            $fileCollection = glob('includes/assets/images/profiles/' . $userId . '/' . $filename . '.*');
+            $tempPath = 'includes/assets/images/profiles/' . $userId . '/' . $filename;
             foreach ($fileCollection as $filePath) {
-                //echo "<pre>" . print_r($filePath, true) . "</pre>";
                 foreach ($allowedExtensions as $extension) {
 
                     if ($tempPath . '.' . $extension == $filePath) {
@@ -148,8 +149,7 @@ class ImagesProfile
             }
 
 
-            $imagePath = 'includes/assets/images/upload/' . $filename;
-            //echo "<pre>" . print_r($imagePath, true) . "</pre>";
+            $imagePath = 'includes/assets/images/profiles/' . $userId . '/' . $filename;
 
             if (file_exists($imagePath)) {
                 // Supprimer l'image du dossier
@@ -164,8 +164,6 @@ class ImagesProfile
         }
         return false;
     }
-
-
 
 
 }

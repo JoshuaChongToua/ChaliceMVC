@@ -26,7 +26,7 @@ class UsersTypes
         }
         $return = [];
         foreach ($types as $type) {
-            $return[] = new TypesModel((object) $type);
+            $return[] = new TypesModel((object)$type);
         }
         return $return;
     }
@@ -58,14 +58,14 @@ class UsersTypes
 
     public function delete(array $typeId): PDOStatement|bool
     {
-        $typeModel = new TypesModel((object) ["type_id" => $typeId['type_id']]);
+        $typeModel = new TypesModel((object)["type_id" => $typeId['type_id']]);
 
         return $typeModel->delete();
     }
 
     private function save(array $type): PDOStatement|bool
     {
-        $typeModel = new TypesModel((object) $type);
+        $typeModel = new TypesModel((object)$type);
 
         return $typeModel->save();
     }
@@ -78,9 +78,6 @@ class UsersTypes
 
         return true;
     }
-
-
-
 
 
 }

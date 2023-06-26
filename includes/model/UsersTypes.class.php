@@ -7,6 +7,7 @@ use common\SPDO;
 use PDO;
 use PDOStatement;
 use stdClass;
+
 class UsersTypes
 {
 
@@ -61,7 +62,7 @@ class UsersTypes
 
     public function save()
     {
-        if (empty($this->typeId) && empty($this->role) ) {
+        if (empty($this->typeId) && empty($this->role)) {
             return false;
         }
 

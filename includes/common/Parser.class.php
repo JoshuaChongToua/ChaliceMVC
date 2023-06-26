@@ -69,7 +69,7 @@ class Parser
                 'type' => new UserTypesView(),
                 'image' => new ImageView(),
                 'profile' => new ProfileView(),
-                'gestionImageProfile' => new ImagesProfileView(),
+                'imageProfile' => new ImagesProfileView(),
                 default => new DashboardView()
             };
 

@@ -60,7 +60,7 @@ if ($_SERVER['HTTP_HOST'] == "localhost") {
 <div class="sidebar sidebar-hide-to-small sidebar-shrink sidebar-gestures">
     <div class="nano">
         <div class="nano-content">
-            <div class="logo"><a href="main.php"><img src="includes/assets/images/logo.png" width="50px" height="50px"
+            <div class="logo"><a href="?view=default"><img src="includes/assets/images/logo.png" width="50px" height="50px"
                                                       alt=""/>
                     <span>Chalice Admin</span></a>
             </div>

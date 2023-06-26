@@ -7,6 +7,7 @@ use common\SPDO;
 use PDO;
 use PDOStatement;
 use stdClass;
+
 class Users
 {
     private int $userId;
@@ -19,23 +20,23 @@ class Users
     public function __construct(StdClass $user)
     {
 
-            //echo "<pre>" . print_r($user, true) . "</pre>";
+        //echo "<pre>" . print_r($user, true) . "</pre>";
 
-            if (property_exists($user, 'user_id')) {
-                $this->userId =  intval($user->user_id);
-            }
-            if (property_exists($user, 'login')) {
-                $this->login = $user->login;
-            }
-            if (property_exists($user, 'password')) {
-                $this->password = $user->password;
-            }
-            if (property_exists($user, 'type_id')) {
-                $this->typeId = intval($user->type_id);
-            }
-            if (property_exists($user, 'create_date')) {
-                $this->createDate = $user->create_date;
-            }
+        if (property_exists($user, 'user_id')) {
+            $this->userId = intval($user->user_id);
+        }
+        if (property_exists($user, 'login')) {
+            $this->login = $user->login;
+        }
+        if (property_exists($user, 'password')) {
+            $this->password = $user->password;
+        }
+        if (property_exists($user, 'type_id')) {
+            $this->typeId = intval($user->type_id);
+        }
+        if (property_exists($user, 'create_date')) {
+            $this->createDate = $user->create_date;
+        }
 
     }
 

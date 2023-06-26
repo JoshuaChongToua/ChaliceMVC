@@ -1,11 +1,13 @@
 <?php
 
 namespace controller;
+
 use common\SPDO;
 use model\News as NewsModel;
 use PDO;
 use PDOStatement;
 use stdClass;
+
 class News
 {
 
@@ -20,7 +22,7 @@ class News
         $pdo->execPrepare($query);
         $pdo->execBindValue(':newsId', $newsId, PDO::PARAM_INT);
         $news = $pdo->execQuery(true);
-        if (!$news){
+        if (!$news) {
             return false;
         }
 
@@ -39,11 +41,12 @@ class News
 
         $return = [];
         foreach ($news as $oneNews) {
-            $return[] = new NewsModel((object) $oneNews);
+            $return[] = new NewsModel((object)$oneNews);
         }
 
         return $return;
     }
+
     public function addNew(array $news): PDOStatement|bool
     {
 
@@ -58,7 +61,7 @@ class News
 
     public function delete(array $newsId): PDOStatement|bool
     {
-        $newsModel = new NewsModel((object) ["news_id" => $newsId['news_id']]);
+        $newsModel = new NewsModel((object)["news_id" => $newsId['news_id']]);
 
         return $newsModel->delete();
     }
@@ -76,7 +79,7 @@ class News
 
     private function save(array $news): PDOStatement|bool
     {
-        $newsModel = new NewsModel((object) $news);
+        $newsModel = new NewsModel((object)$news);
 
         return $newsModel->save();
     }

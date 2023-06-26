@@ -16,10 +16,10 @@ class ImagesProfile
     public function __construct(StdClass $imageProfile)
     {
         if (property_exists($imageProfile, 'image_id')) {
-            $this->imageId =  intval($imageProfile->image_id);
+            $this->imageId = intval($imageProfile->image_id);
         }
         if (property_exists($imageProfile, 'user_id')) {
-            $this->userId =  intval($imageProfile->user_id);
+            $this->userId = intval($imageProfile->user_id);
         }
     }
 
@@ -59,7 +59,7 @@ class ImagesProfile
     {
         //echo "<pre>" . print_r($this, true) . "</pre>";
 
-        if (empty($this->imageId) && empty($this->userId))  {
+        if (empty($this->imageId) && empty($this->userId)) {
             return false;
         }
         $pdo = SPDO::getInstance();
@@ -72,7 +72,7 @@ class ImagesProfile
 
     public function delete(): PDOStatement|bool
     {
-        if (empty($this->userId)) {
+        if (empty($this->imageId)) {
             return false;
         }
         $pdo = SPDO::getInstance();
@@ -82,6 +82,7 @@ class ImagesProfile
 
         return $pdo->execStatement();
     }
+
     public function getLastInsertedId(): int
     {
         $pdo = SPDO::getInstance();

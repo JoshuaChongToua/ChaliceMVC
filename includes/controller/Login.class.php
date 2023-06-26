@@ -31,7 +31,7 @@ class Login
     public function logout(): void
     {
         session_unset();
-        session_destroy() ;
+        session_destroy();
     }
 
     private function getVerification($login, $password): UserModel|bool

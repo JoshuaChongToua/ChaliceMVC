@@ -25,7 +25,7 @@ class Profile
         //echo "<pre>" . print_r($user, true) . "</pre>";
 
         if (property_exists($user, 'user_id')) {
-            $this->userId =  intval($user->user_id);
+            $this->userId = intval($user->user_id);
         }
         if (property_exists($user, 'name')) {
             $this->name = $user->name;
@@ -45,9 +45,9 @@ class Profile
         if (property_exists($user, 'city')) {
             $this->city = $user->city;
         }
-        /*if (property_exists($user, 'image_id')) {
-            $this->imageId = intval($user->imageId);
-        }*/
+        if (property_exists($user, 'image_id')) {
+            $this->imageId = intval($user->image_id);
+        }
 
     }
 
@@ -165,7 +165,7 @@ class Profile
     public function save()
     {
 
-        if (empty($this->userId) && empty($this->name) && empty($this->firstName) && empty($this->phone) && empty($this->address) && empty($this->email) && empty($this->city) ) {
+        if (empty($this->userId) && empty($this->name) && empty($this->firstName) && empty($this->phone) && empty($this->address) && empty($this->email) && empty($this->city)) {
             return false;
         }
         //echo "<pre>" . print_r($this->userId, true) . "</pre>";
@@ -178,7 +178,8 @@ class Profile
                  phone = :phone,
                  address = :address,
                  email = :email,
-                 city = :city
+                 city = :city,
+                 image_id = :imageId
                  
                  WHERE user_id = :userId;
             ";
@@ -189,8 +190,8 @@ class Profile
             $pdo->execBindValue(':address', $this->address ?? "", PDO::PARAM_STR);
             $pdo->execBindValue(':email', $this->email ?? "", PDO::PARAM_STR);
             $pdo->execBindValue(':city', $this->city ?? "", PDO::PARAM_STR);
-            //$pdo->execBindValue(':imageId', $this->imageId ?? "", PDO::PARAM_INT);
-            $pdo->execBindValue(':userId', $this->userId ?? "" , PDO::PARAM_INT);
+            $pdo->execBindValue(':imageId', $this->imageId ?? "", PDO::PARAM_INT);
+            $pdo->execBindValue(':userId', $this->userId ?? "", PDO::PARAM_INT);
         }
 
         return $pdo->execStatement();

@@ -89,9 +89,9 @@ class Images
             $query = "UPDATE images SET 
                  name = :name 
                  WHERE image_id = :imageId;";
-                 $pdo->execPrepare($query);
-                 $pdo->execBindValue(':name', $this->name, PDO::PARAM_STR);
-                 $pdo->execBindValue(':imageId', $this->imageId, PDO::PARAM_INT);
+            $pdo->execPrepare($query);
+            $pdo->execBindValue(':name', $this->name, PDO::PARAM_STR);
+            $pdo->execBindValue(':imageId', $this->imageId, PDO::PARAM_INT);
 
 
         } else {
@@ -117,10 +117,8 @@ class Images
         $pdo->execPrepare($query);
         $pdo->execBindValue(':imageId', $this->imageId, PDO::PARAM_INT);
 
-        return $pdo->execStatement(false, true);
+        return $pdo->execStatement();
     }
-
-
 
 
     public function getLastInsertedId(): int

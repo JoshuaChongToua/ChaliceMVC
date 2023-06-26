@@ -7,6 +7,7 @@ use common\SPDO;
 use PDO;
 use PDOStatement;
 use stdClass;
+
 class News
 {
     public const NEWS_ENABLE = 1;
@@ -25,7 +26,7 @@ class News
         //echo "<pre>" . print_r($news, true) . "</pre>";
 
         if (property_exists($news, 'news_id')) {
-            $this->newsId =  intval($news->news_id);
+            $this->newsId = intval($news->news_id);
         }
         if (property_exists($news, 'title')) {
             $this->title = $news->title;
@@ -165,7 +166,7 @@ class News
             ";
 
 
-        }else {
+        } else {
             $pdo = SPDO::getInstance();
             $query = "INSERT INTO news (title, description, image_id, link ,publicationDate, enable) 
                         VALUES (:title, :description, :imageId, :link, :publicationDate, :enable);";
