@@ -43,7 +43,9 @@ class Login
         $user = $pdo->execQuery(true);
         //echo "<pre>" . print_r($user, true) . "</pre>";
         //echo $user['password'];
-
+        if (!$user) {
+            return false;
+        }
         if (Helper::uncrypt($password, $user['password'])) {
             return new UserModel((object)$user);
         }

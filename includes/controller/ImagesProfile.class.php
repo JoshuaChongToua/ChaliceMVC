@@ -2,6 +2,7 @@
 
 namespace controller;
 
+use common\Helper;
 use common\SPDO;
 use model\ImagesProfile as ImagesProfilesModel;
 use PDO;
@@ -66,7 +67,7 @@ class ImagesProfile
 
     public function delete(array $imageId): PDOStatement|bool
     {
-        $ImagesProfileModel = new ImagesProfilesModel((object)["image_id" => $imageId['image_id']]);
+        $ImagesProfileModel = new ImagesProfilesModel((object)["image_id" => $imageId['id']]);
         $this->delImage($_SESSION['user_id'], $ImagesProfileModel->getImageId());
 
         return $ImagesProfileModel->delete();
@@ -104,6 +105,10 @@ class ImagesProfile
 
     private function addImage(int $userId, int $lastInsertedId): bool
     {
+        if (!Helper::mkdirUser($userId)) {
+            return false;
+        }
+
         $file = $_FILES['image'];
         $tmpFilePath = $file['tmp_name'];
         $allowedExtensions = ['jpg', 'jpeg', 'png'];

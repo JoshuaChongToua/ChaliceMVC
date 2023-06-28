@@ -41,7 +41,7 @@ class ImagesProfile
                         </div>
                         <div class="card-body">
                             <div class="form-validation">
-                                <form class="form-valide" name="imageForm" action="?view=imageProfile&action=add&user_id=' . $profileUserData->getUserId() . '" method="POST" enctype="multipart/form-data">
+                                <form class="form-valide" name="imageForm" action="/admin/imageProfile/add/' . $profileUserData->getUserId() . '" method="POST" enctype="multipart/form-data">
                                     <div class="form-group row">
                                         <div class="col-lg-8">
                                             <input class="form-control" type="file" name="image">
@@ -50,7 +50,7 @@ class ImagesProfile
                 
                                     <input type="hidden" name="user_id" value="' . $profileUserData->getUserId() . '">
                                     <input type="hidden" name="image_id" value="' . $profileUserData->getUserId() . '">
-                                    <a class="btn btn-info btn-flat btn-addon m-b-10 m-l-5" href="?view=profile&action=update&user_id=' . $profileUserData->getUserId() . '"><i class="ti-back-left"></i> Retour</a>
+                                    <a class="btn btn-info btn-flat btn-addon m-b-10 m-l-5" href="/admin/profile/update/' . $profileUserData->getUserId() . '"><i class="ti-back-left"></i> Retour</a>
                                     <button type="submit" name="submit" class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i> Submit</button>
                                 </form>
                             </div>
@@ -86,7 +86,7 @@ class ImagesProfile
                 $return .= '   
                 <div class="col-lg-2">
                     <img id="imageTab" src="includes/assets/images/profiles/' . $profileUserData->getUserId() . '/' . $image->getImageId() . '.jpg">
-                    <a href="?view=imageProfile&action=delete&image_id=' . $image->getImageId() . '"><span class="jsgrid-button jsgrid-delete-button ti-trash" type="button" title="Delete"></span></a> 
+                    <a href="/admin/imageProfile/delete/' . $image->getImageId() . '"><span class="jsgrid-button jsgrid-delete-button ti-trash" type="button" title="Delete"></span></a> 
                 </div>';
                 $imagesPerRow--;
                 if ($imagesPerRow == 0) {

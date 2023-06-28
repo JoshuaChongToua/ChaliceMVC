@@ -44,7 +44,7 @@ class UsersTypes
                                                 <th style="width: 400px;">#</th>
                                                 <th style="width: 400px;">Role</th>
                                                 <th style="width: 400px;">
-                                                    <a href="?view=type&action=add"><span class="jsgrid-button jsgrid-mode-button jsgrid-insert-mode-button ti-plus" type="button" title=""></span></a>
+                                                    <a href="/admin/type/add"><span class="jsgrid-button jsgrid-mode-button jsgrid-insert-mode-button ti-plus" type="button" title=""></span></a>
                                                 </th>
                                             </tr>
                                         </thead>
@@ -55,8 +55,8 @@ class UsersTypes
             $return .= '<td style="width: 100px;">' . $type->getTypeId() . '</td>';
             $return .= '<td style="width: 100px;">' . $type->getRole() . '</td>';
             $return .= '<td style="width: 50px;"> 
-                            <a href="?view=type&action=update&type_id=' . $type->getTypeId() . '"><span class="jsgrid-button jsgrid-edit-button ti-pencil" type="button" title="Edit"></span></a> 
-                            <a href="?view=type&action=delete&type_id=' . $type->getTypeId() . '"><span class="jsgrid-button jsgrid-delete-button ti-trash" type="button" title="Delete"></span></a> 
+                            <a href="/admin/type/update/' . $type->getTypeId() . '"><span class="jsgrid-button jsgrid-edit-button ti-pencil" type="button" title="Edit"></span></a> 
+                            <a href="/admin/type/delete/' . $type->getTypeId() . '"><span class="jsgrid-button jsgrid-delete-button ti-trash" type="button" title="Delete"></span></a> 
                         </td>';
             $return .= '</tr>';
         }
@@ -76,8 +76,8 @@ class UsersTypes
     public function getForm(array $action): string
     {
         $typeInfo = null;
-        if (isset($action['type_id'])) {
-            $typeInfo = $this->usersTypesController->getOne($_GET['type_id']);
+        if (isset($action['id'])) {
+            $typeInfo = $this->usersTypesController->getOne($action['id']);
         }
 
         $return = '
@@ -90,7 +90,7 @@ class UsersTypes
                         </div>
                         <div class="card-body">
                             <div class="form-validation">
-                                <form class="form-valide" name="typeForm" method="POST" action="?view=type&action=' . $action['action'] . '" onkeypress="verifierCaracteres(event); return false;">
+                                <form class="form-valide" name="typeForm" method="POST" action="/admin/type/' . $action['action'] . '" onkeypress="verifierCaracteres(event); return false;">
                                     <div class="form-group row">
                                         <label class="col-lg-3 col-form-label" for="login">Role :<span class="text-danger">*</span></label>
                                         <div class="col-lg-9">
@@ -103,7 +103,7 @@ class UsersTypes
                                     <input type="hidden" name="type_id" value="' . ($action['action'] == 'update' ? $typeInfo->getTypeId() : '') . '">
                                     <br>
     
-                                    <a class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" href="?view=type"><i class="ti-back-left"></i>Retour</a>
+                                    <a class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" href="/admin/type"><i class="ti-back-left"></i>Retour</a>
                                     <button type="submit" name="submit" class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
     
                                 </form>

@@ -18,14 +18,26 @@ class Helper
 
     public static function getImage(string $id, string $dir): string
     {
-        $imageDirectory = 'includes/assets/images/' . $dir . '/';
+        $imageDirectory = '/admin/includes/assets/images/' . $dir . '/';
 
         foreach (['jpg', 'jpeg', 'png'] as $extension) {
+            //echo $imageDirectory . $id . '.' . $extension . '<br>';
             if (file_exists($imageDirectory . $id . '.' . $extension)) {
                 return $imageDirectory . $id . '.' . $extension;
             }
         }
         return $imageDirectory . "default.png";
+    }
+
+    public static function mkdirUser(int $userId): bool
+    {
+        $path = "/admin/includes/assets/images/profiles/" . $userId;
+
+        if (!is_dir($path)) {
+            return mkdir($path, 0755, true);
+        }
+
+        return true;
     }
 }
 

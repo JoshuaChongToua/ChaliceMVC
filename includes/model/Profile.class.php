@@ -165,34 +165,32 @@ class Profile
     public function save()
     {
 
-        if (empty($this->userId) && empty($this->name) && empty($this->firstName) && empty($this->phone) && empty($this->address) && empty($this->email) && empty($this->city)) {
+        if (empty($this->userId) && empty($this->name) && empty($this->firstName) && empty($this->phone) && empty($this->address) && empty($this->email) && empty($this->city) && empty($this->imageId)) {
             return false;
         }
         //echo "<pre>" . print_r($this->userId, true) . "</pre>";
+        $pdo = SPDO::getInstance();
 
-        if (!empty($this->userId)) {
-            $pdo = SPDO::getInstance();
-            $query = "UPDATE profile SET 
-                 name = :name, 
-                 firstname = :firstname, 
-                 phone = :phone,
-                 address = :address,
-                 email = :email,
-                 city = :city,
-                 image_id = :imageId
-                 
-                 WHERE user_id = :userId;
-            ";
-            $pdo->execPrepare($query);
-            $pdo->execBindValue(':name', $this->name ?? "", PDO::PARAM_STR);
-            $pdo->execBindValue(':firstname', $this->firstName ?? "", PDO::PARAM_STR);
-            $pdo->execBindValue(':phone', $this->phone ?? "", PDO::PARAM_STR);
-            $pdo->execBindValue(':address', $this->address ?? "", PDO::PARAM_STR);
-            $pdo->execBindValue(':email', $this->email ?? "", PDO::PARAM_STR);
-            $pdo->execBindValue(':city', $this->city ?? "", PDO::PARAM_STR);
-            $pdo->execBindValue(':imageId', $this->imageId ?? "", PDO::PARAM_INT);
-            $pdo->execBindValue(':userId', $this->userId ?? "", PDO::PARAM_INT);
-        }
+        $query = "INSERT INTO profile (user_id, name, firstname, phone, address, email, city, image_id)
+                      VALUES (:userId, :name, :firstname, :phone, :address, :email, :city, :imageId )
+                      ON DUPLICATE KEY UPDATE name = :name, 
+                                             firstname = :firstname, 
+                                             phone = :phone,
+                                             address = :address,
+                                             email = :email,
+                                             city = :city
+                                             ;";
+
+        $pdo->execPrepare($query);
+        $pdo->execBindValue(':name', $this->name ?? "", PDO::PARAM_STR);
+        $pdo->execBindValue(':firstname', $this->firstName ?? "", PDO::PARAM_STR);
+        $pdo->execBindValue(':phone', $this->phone ?? "", PDO::PARAM_STR);
+        $pdo->execBindValue(':address', $this->address ?? "", PDO::PARAM_STR);
+        $pdo->execBindValue(':email', $this->email ?? "", PDO::PARAM_STR);
+        $pdo->execBindValue(':city', $this->city ?? "", PDO::PARAM_STR);
+        $pdo->execBindValue(':imageId', $this->imageId ?? "", PDO::PARAM_INT);
+        $pdo->execBindValue(':userId', $this->userId ?? "", PDO::PARAM_INT);
+
 
         return $pdo->execStatement();
     }

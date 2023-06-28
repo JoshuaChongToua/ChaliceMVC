@@ -31,9 +31,13 @@ class Parser
 
     private function parse($get, $post): void
     {
-        if (isset($get['action']) && $get['action'] == "logout") {
+        if (isset($get['view']) && $get['view'] == "logout") {
             $controller = new LoginController();
             $controller->logout();
+            $view = new LoginView();
+            $this->display = $view->getForm();
+
+            return;
         }
 
         if (!isset($_SESSION['login'])) {
@@ -41,6 +45,8 @@ class Parser
                 $controller = new LoginController();
                 if (!$controller->verifyForm($post)) {
                     $this->display = "Error login";
+                    $view = new LoginView();
+                    $this->display .= $view->getForm();
 
                     return;
                 }

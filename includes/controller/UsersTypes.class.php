@@ -58,7 +58,7 @@ class UsersTypes
 
     public function delete(array $typeId): PDOStatement|bool
     {
-        $typeModel = new TypesModel((object)["type_id" => $typeId['type_id']]);
+        $typeModel = new TypesModel((object)["type_id" => $typeId['id']]);
 
         return $typeModel->delete();
     }

@@ -1,0 +1,14 @@
+    ErrorDocument 401 "Authorisation Required"
+    AuthUserFile "/home/bjxo0033/chaliceautumn/admin/.htpasswd"
+    AuthName "Veuillez entrer vos identifiants"
+    AuthType Basic
+    <Limit GET >
+    Require valid-user
+    </Limit>
+
+    RewriteEngine On
+
+
+    RewriteRule ^([a-z]+)$ ?view=$1
+    RewriteRule ^([a-z]+)/([a-z]+)$ ?view=$1&action=$2
+    RewriteRule ^([a-z]+)/([a-z]+)/([0-9]+)$ ?view=$1&action=$2&id=$3

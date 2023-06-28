@@ -153,8 +153,8 @@ class News
         if (empty($this->newsId) && empty($this->title) && empty($this->description) && empty($this->imageId) && empty($this->link) && empty($this->publicationDate) && empty($this->enable)) {
             return false;
         }
+        $pdo = SPDO::getInstance();
         if (!empty($this->newsId)) {
-            $pdo = SPDO::getInstance();
             $query = "UPDATE news SET 
                  title = :title, 
                  description = :description, 
@@ -167,7 +167,6 @@ class News
 
 
         } else {
-            $pdo = SPDO::getInstance();
             $query = "INSERT INTO news (title, description, image_id, link ,publicationDate, enable) 
                         VALUES (:title, :description, :imageId, :link, :publicationDate, :enable);";
         }

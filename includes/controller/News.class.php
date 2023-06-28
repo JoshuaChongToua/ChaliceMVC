@@ -61,7 +61,7 @@ class News
 
     public function delete(array $newsId): PDOStatement|bool
     {
-        $newsModel = new NewsModel((object)["news_id" => $newsId['news_id']]);
+        $newsModel = new NewsModel((object)["news_id" => $newsId['id']]);
 
         return $newsModel->delete();
     }

@@ -63,7 +63,7 @@ class Images
 
     public function delete(array $imageId): PDOStatement|bool
     {
-        $imageModel = new ImagesModel((object)["image_id" => $imageId['image_id']]);
+        $imageModel = new ImagesModel((object)["image_id" => $imageId['id']]);
         $this->delImage($imageModel->getImageId());
         return $imageModel->delete();
     }

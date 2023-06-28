@@ -58,7 +58,7 @@ class Users
 
     public function delete(array $userId): PDOStatement|bool
     {
-        $userModel = new UsersModel((object) ["user_id" => $userId['user_id']]);
+        $userModel = new UsersModel((object) ["user_id" => $userId['id']]);
 
         return $userModel->delete();
     }

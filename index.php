@@ -38,7 +38,6 @@ spl_autoload_register(function ($class) {
 });
 
 use common\Parser;
-
 $parser = new Parser($_GET, $_POST);
 
 if (!empty($_SESSION['login'])) {

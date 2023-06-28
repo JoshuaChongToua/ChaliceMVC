@@ -1,34 +1,34 @@
 </div>
 </div>
 
-<script src="includes/assets/js/jquery-3.6.0.min.js"></script>
+<script src="/admin/includes/assets/js/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.tiny.cloud/1/7z35pqy407ei7ctvi0ioouusk8zni4ikprha2ndun8v5qign/tinymce/6/tinymce.min.js"
         referrerpolicy="origin"></script>
-<script src="includes/assets/js/tinymce-jquery.min.js"></script>
+<script src="/admin/includes/assets/js/tinymce-jquery.min.js"></script>
 
-<script src="includes/assets/js/lib/jquery.nanoscroller.min.js"></script>
-<script src="includes/assets/js/lib/menubar/sidebar.js"></script>
-<script src="includes/assets/js/lib/preloader/pace.min.js"></script>
-<script src="includes/assets/js/lib/bootstrap.min.js"></script>
+<script src="/admin/includes/assets/js/lib/jquery.nanoscroller.min.js"></script>
+<script src="/admin/includes/assets/js/lib/menubar/sidebar.js"></script>
+<script src="/admin/includes/assets/js/lib/preloader/pace.min.js"></script>
+<script src="/admin/includes/assets/js/lib/bootstrap.min.js"></script>
 
 
-<script src="includes/assets/js/lib/select2/select2.full.min.js"></script>
-<script src="includes/assets/js/lib/form-validation/jquery.validate.min.js"></script>
-<script src="includes/assets/js/lib/form-validation/jquery.validate-init.js"></script>
+<script src="/admin/includes/assets/js/lib/select2/select2.full.min.js"></script>
+<script src="/admin/includes/assets/js/lib/form-validation/jquery.validate.min.js"></script>
+<script src="/admin/includes/assets/js/lib/form-validation/jquery.validate-init.js"></script>
 
-<script src="includes/assets/js/lib/jsgrid/db.js"></script>
-<script src="includes/assets/js/lib/jsgrid/jsgrid.core.js"></script>
-<script src="includes/assets/js/lib/jsgrid/jsgrid.load-indicator.js"></script>
-<script src="includes/assets/js/lib/jsgrid/jsgrid.load-strategies.js"></script>
-<script src="includes/assets/js/lib/jsgrid/jsgrid.sort-strategies.js"></script>
-<script src="includes/assets/js/lib/jsgrid/jsgrid.field.js"></script>
-<script src="includes/assets/js/lib/jsgrid/fields/jsgrid.field.text.js"></script>
-<script src="includes/assets/js/lib/jsgrid/fields/jsgrid.field.number.js"></script>
-<script src="includes/assets/js/lib/jsgrid/fields/jsgrid.field.select.js"></script>
-<script src="includes/assets/js/lib/jsgrid/fields/jsgrid.field.checkbox.js"></script>
-<script src="includes/assets/js/lib/jsgrid/fields/jsgrid.field.control.js"></script>
+<script src="/admin/includes/assets/js/lib/jsgrid/db.js"></script>
+<script src="/admin/includes/assets/js/lib/jsgrid/jsgrid.core.js"></script>
+<script src="/admin/includes/assets/js/lib/jsgrid/jsgrid.load-indicator.js"></script>
+<script src="/admin/includes/assets/js/lib/jsgrid/jsgrid.load-strategies.js"></script>
+<script src="/admin/includes/assets/js/lib/jsgrid/jsgrid.sort-strategies.js"></script>
+<script src="/admin/includes/assets/js/lib/jsgrid/jsgrid.field.js"></script>
+<script src="/admin/includes/assets/js/lib/jsgrid/fields/jsgrid.field.text.js"></script>
+<script src="/admin/includes/assets/js/lib/jsgrid/fields/jsgrid.field.number.js"></script>
+<script src="/admin/includes/assets/js/lib/jsgrid/fields/jsgrid.field.select.js"></script>
+<script src="/admin/includes/assets/js/lib/jsgrid/fields/jsgrid.field.checkbox.js"></script>
+<script src="/admin/includes/assets/js/lib/jsgrid/fields/jsgrid.field.control.js"></script>
 
-<script src="includes/assets/js/scripts.js"></script>
+<script src="/admin/includes/assets/js/scripts.js"></script>
 
 <script>
     $(document).ready(function () {
@@ -62,7 +62,7 @@
             } else {
                 var imgElement = document.createElement("img");
                 const image = document.getElementById("image_id")
-                var imgPath = "includes/assets/images/upload/" + image + ".jpg" ;
+                var imgPath = "/admin/includes/assets/images/upload/" + image + ".jpg" ;
                 imgElement.src = imgPath;
                 document.getElementById("test").innerHTML = "";
                 document.getElementById("test").appendChild(imgElement);

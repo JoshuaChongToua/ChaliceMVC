@@ -42,7 +42,7 @@ class Users
                                                 <th style="width: 150px;">Role</th>
                                                 <th style="width: 200px;">Create Date</th>
                                                 <th style="width: 100px;">
-                                                    <a href="?view=user&action=add"><span class="jsgrid-button jsgrid-mode-button jsgrid-insert-mode-button ti-plus" type="button" title=""></span></a>
+                                                    <a href="/admin/user/add"><span class="jsgrid-button jsgrid-mode-button jsgrid-insert-mode-button ti-plus" type="button" title=""></span></a>
                                                 </th>
                                             </tr>
                                         </thead>
@@ -57,8 +57,8 @@ class Users
                 $return .= '<td style="width: 100px;">' . $role . '</td>';
                 $return .= '<td style="width: 100px;">' . $user->getCreateDate() . '</td>';
                 $return .= '<td style="width: 50px;"> 
-                                <a href="?view=user&action=update&user_id=' . $user->getUserId() . '"><span class="jsgrid-button jsgrid-edit-button ti-pencil" type="button" title="Edit"></span></a> 
-                                <a href="?view=user&action=delete&user_id=' . $user->getUserId() . '"><span class="jsgrid-button jsgrid-delete-button ti-trash" type="button" title="Delete"></span></a> 
+                                <a href="/admin/user/update/' . $user->getUserId() . '"><span class="jsgrid-button jsgrid-edit-button ti-pencil" type="button" title="Edit"></span></a> 
+                                <a href="/admin/user/delete/' . $user->getUserId() . '"><span class="jsgrid-button jsgrid-delete-button ti-trash" type="button" title="Delete"></span></a> 
                             </td>';
                 $return .= '</tr>';
             }
@@ -78,8 +78,8 @@ class Users
     public function getForm(array $action): string
     {
         $userInfo = null;
-        if (isset($action['user_id'])) {
-            $userInfo = $this->controller->getOne($_GET['user_id']);
+        if (isset($action['id'])) {
+            $userInfo = $this->controller->getOne(intval($action['id']));
         }
 
         $usersTypesController = new UsersTypesController();
@@ -95,7 +95,7 @@ class Users
                         </div>
                         <div class="card-body">
                             <div class="form-validation">
-                                <form class="form-valide" name="userForm" method="POST" action="?view=user&action=' . $action['action'] . '">
+                                <form class="form-valide" name="userForm" method="POST" action="/admin/user/' . $action['action'] . '">
                                     <div class="form-group row">
                                         <label class="col-lg-3 col-form-label" for="login">Login:<span class="text-danger">*</span></label>
                                         <div class="col-lg-9">
@@ -120,10 +120,11 @@ class Users
                                         <label class="col-lg-3 col-form-label" for="role">Role:<span class="text-danger">*</span></label>
                                         <div class="col-lg-9">
                                             <select class="form-control" name="type_id">';
-
-        foreach ($usersTypesCollection as $type) {
-            $selected = $action['action'] == 'update' && $type->getTypeId() == $userInfo->getTypeId() ? 'selected' : '';
-            $return .= '<option value="' . $type->getTypeId() . '" ' . $selected . '>' . $type->getRole() . '</option>';
+        if (is_array($usersTypesCollection)) {
+            foreach ($usersTypesCollection as $type) {
+                $selected = $action['action'] == 'update' && $type->getTypeId() == $userInfo->getTypeId() ? 'selected' : '';
+                $return .= '<option value="' . $type->getTypeId() . '" ' . $selected . '>' . $type->getRole() . '</option>';
+            }
         }
 
         $return .= '</select>
@@ -132,7 +133,7 @@ class Users
             
             <br>
       
-            <a class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" href="?view=user"><i class="ti-back-left"></i>Retour</a>
+            <a class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" href="/admin/user"><i class="ti-back-left"></i>Retour</a>
                    
             <button type="submit" name="submit" class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
                                         

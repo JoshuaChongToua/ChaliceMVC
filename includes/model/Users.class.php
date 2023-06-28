@@ -14,7 +14,7 @@ class Users
     private string $login;
     private string $password;
     private int $typeId;
-    private string $createDate;
+    private ?string $createDate = null;
 
 
     public function __construct(StdClass $user)
@@ -116,7 +116,7 @@ class Users
     /**
      * @return string
      */
-    public function getCreateDate(): string
+    public function getCreateDate(): ?string
     {
         return $this->createDate;
     }
@@ -137,32 +137,27 @@ class Users
         if (empty($this->userId) && empty($this->login) && empty($this->password) && empty($this->typeId) && empty($this->createDate)) {
             return false;
         }
-
+        $pdo = SPDO::getInstance();
         if (!empty($this->userId)) {
-            $pdo = SPDO::getInstance();
             $query = "UPDATE users SET 
                  login = :login, 
                  password = :password, 
                  type_id = :typeId
                  WHERE user_id = :userId;
             ";
-            $pdo->execPrepare($query);
-            $pdo->execBindValue(':login', $this->login, PDO::PARAM_STR);
-            $pdo->execBindValue(':password', Helper::crypt($this->password), PDO::PARAM_STR);
-            $pdo->execBindValue(':typeId', $this->typeId, PDO::PARAM_INT);
-            $pdo->execBindValue(':userId', $this->userId, PDO::PARAM_INT);
-
         } else {
-            $pdo = SPDO::getInstance();
             $query = "INSERT INTO users (login, password, type_id) VALUES (
                                                      :login,
                                                      :password,
                                                      :typeId
 )";
-            $pdo->execPrepare($query);
-            $pdo->execBindValue(':login', $this->login, PDO::PARAM_STR);
-            $pdo->execBindValue(':password', Helper::crypt($this->password), PDO::PARAM_STR);
-            $pdo->execBindValue(':typeId', $this->typeId, PDO::PARAM_INT);
+        }
+        $pdo->execPrepare($query);
+        $pdo->execBindValue(':login', $this->login, PDO::PARAM_STR);
+        $pdo->execBindValue(':password', Helper::crypt($this->password), PDO::PARAM_STR);
+        $pdo->execBindValue(':typeId', $this->typeId, PDO::PARAM_INT);
+        if (!empty($this->userId)) {
+            $pdo->execBindValue(':userId', $this->userId, PDO::PARAM_INT);
         }
 
         return $pdo->execStatement();

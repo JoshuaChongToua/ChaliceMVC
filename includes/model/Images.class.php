@@ -13,7 +13,7 @@ class Images
 {
     private int $imageId;
     private string $name;
-    private string $createDate;
+    private ?string $createDate;
 
 
     public function __construct(StdClass $image)
@@ -63,7 +63,7 @@ class Images
     }
 
 
-    public function getCreateDate(): string
+    public function getCreateDate(): ?string
     {
         return $this->createDate;
     }
@@ -82,27 +82,22 @@ class Images
         if (empty($this->imageId) && empty($this->name) && empty($this->createDate)) {
             return false;
         }
-        //echo "aaaaa";
-
+        $pdo = SPDO::getInstance();
         if (!empty($this->imageId)) {
-            $pdo = SPDO::getInstance();
             $query = "UPDATE images SET 
                  name = :name 
                  WHERE image_id = :imageId;";
-            $pdo->execPrepare($query);
-            $pdo->execBindValue(':name', $this->name, PDO::PARAM_STR);
-            $pdo->execBindValue(':imageId', $this->imageId, PDO::PARAM_INT);
+
 
 
         } else {
-            $pdo = SPDO::getInstance();
             $query = "INSERT INTO images (name) VALUES (:name);";
-            $pdo->execPrepare($query);
-            $pdo->execBindValue(':name', $this->name, PDO::PARAM_STR);
-
-
         }
-
+        $pdo->execPrepare($query);
+        $pdo->execBindValue(':name', $this->name, PDO::PARAM_STR);
+        if (!empty($this->imageId)) {
+            $pdo->execBindValue(':imageId', $this->imageId, PDO::PARAM_INT);
+        }
         return $pdo->execStatement();
     }
 

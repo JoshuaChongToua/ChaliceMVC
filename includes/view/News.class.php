@@ -25,7 +25,7 @@ class News
         $allNews = $this->newsController->getAll();
         $imageController = new ImagesController();
         if ($allNews === false) {
-            return "Error; Fail to load users";
+            return "Error; Fail to load news";
         }
         $return = '
         <div class="container">
@@ -46,7 +46,7 @@ class News
                                                 <th style="width: 150px;">Publication Date</th>
                                                 <th style="width: 150px;">Enable</th>
                                                 <th style="width: 100px;">
-                                                    <a href="?view=news&action=add"><span class="jsgrid-button jsgrid-mode-button jsgrid-insert-mode-button ti-plus jsgrid-align-center" type="button" title=""></span></a>
+                                                    <a href="/admin/news/add"><span class="jsgrid-button jsgrid-mode-button jsgrid-insert-mode-button ti-plus jsgrid-align-center" type="button" title=""></span></a>
                                                 </th>  
                                             </tr>
                                         </thead>
@@ -76,8 +76,8 @@ class News
                 $return .= '<td style="width: 100px;"><i class="ti-close color-danger border-danger"></i></td>';
             }
             $return .= '<td style="width: 50px;"> 
-                <a href="?view=news&action=update&news_id=' . $news->getNewsId() . '"><span class="jsgrid-button jsgrid-edit-button ti-pencil" type="button" title="Edit"  ></span></a> 
-                <a href="?view=news&action=delete&news_id=' . $news->getNewsId() . '"><span class="jsgrid-button jsgrid-delete-button ti-trash" type="button" title="Delete"></span></a> 
+                <a href="/admin/news/update/' . $news->getNewsId() . '"><span class="jsgrid-button jsgrid-edit-button ti-pencil" type="button" title="Edit"  ></span></a> 
+                <a href="/admin/news/delete/' . $news->getNewsId() . '"><span class="jsgrid-button jsgrid-delete-button ti-trash" type="button" title="Delete"></span></a> 
             </td>
 
             </tr>';
@@ -102,8 +102,8 @@ class News
 
     public function getForm(array $action): string
     {
-        if (isset($action['news_id'])) {
-            $newsInfo = $this->newsController->getOne($action['news_id']);
+        if (isset($action['id'])) {
+            $newsInfo = $this->newsController->getOne($action['id']);
             //echo "<pre>" . print_r($newsInfo, true) . "</pre>";
 
         }
@@ -119,7 +119,7 @@ class News
                         </div>
                         <div class="card-body">
                             <div class="form-validation">
-                                <form class="form-valide" name="newsForm" method="POST" action="?view=news&action=' . $action['action'] . '"   >
+                                <form class="form-valide" name="newsForm" method="POST" action="/admin/news/' . $action['action'] . '"   >
                                     <div class="form-group row ">
                                         <label class="col-lg-3 col-form-label" for="title" >Title :<span class="text-danger"> *</span></label>  
                                         <div class="col-lg-9">
@@ -212,7 +212,7 @@ class News
 
                                     <br>
 
-                                    <a class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" href="?view=news"><i class="ti-back-left"></i></span>Retour</a>
+                                    <a class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" href="/admin/news"><i class="ti-back-left"></i></span>Retour</a>
                                     <button type="submit" name="submit"  class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
                                 </form>
                             </div>

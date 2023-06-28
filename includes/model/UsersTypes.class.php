@@ -16,16 +16,16 @@ class UsersTypes
     private string $role;
 
 
-    public function __construct(stdClass $type = null)
+    public function __construct(stdClass $type)
     {
-        if ($type !== null) {
-            if (property_exists($type, 'type_id')) {
-                $this->typeId = intval($type->type_id);
-            }
-            if (property_exists($type, 'role')) {
-                $this->role = $type->role;
-            }
+
+        if (property_exists($type, 'type_id')) {
+            $this->typeId = intval($type->type_id);
         }
+        if (property_exists($type, 'role')) {
+            $this->role = $type->role;
+        }
+
     }
 
     public function toArray(): array
@@ -65,23 +65,21 @@ class UsersTypes
         if (empty($this->typeId) && empty($this->role)) {
             return false;
         }
-
+        $pdo = SPDO::getInstance();
         if (!empty($this->typeId)) {
-            $pdo = SPDO::getInstance();
             $query = "UPDATE users_types SET 
                  role = :role
                  WHERE type_id = :typeId;
             ";
-            $pdo->execPrepare($query);
-            $pdo->execBindValue(':role', $this->role, PDO::PARAM_STR);
-            $pdo->execBindValue(':typeId', $this->typeId, PDO::PARAM_INT);
         } else {
-            $pdo = SPDO::getInstance();
             $query = "INSERT INTO users_types (role) VALUES (:role)";
-            $pdo->execPrepare($query);
-            $pdo->execBindValue(':role', $this->role, PDO::PARAM_STR);
-
         }
+        $pdo->execPrepare($query);
+        $pdo->execBindValue(':role', $this->role, PDO::PARAM_STR);
+        if (!empty($this->typeId)) {
+            $pdo->execBindValue(':typeId', $this->typeId, PDO::PARAM_INT);
+        }
+
         return $pdo->execStatement();
     }
 

@@ -4,6 +4,7 @@ namespace view;
 
 use controller\Profile as ProfileController;
 use controller\ImagesProfile as ImageProfileController;
+use model\Profile as ProfileModel;
 
 class Profile
 {
@@ -21,15 +22,14 @@ class Profile
 
     public function getTable(): string
     {
-        $users = $this->profileController->getAll();
-        if ($users === false) {
-            return "Error; Fail to load users";
+        $profileUserData = $this->profileController->getOne($_SESSION['user_id']);
+        if ($profileUserData === false) {
+            return $this->getForm([]);
         }
 
-        $profileUserData = $this->profileController->getOne($_SESSION['user_id']);
         //echo "<pre>" . print_r($profileUserData, true) . "</pre>";
 
-        $profileImagePath = ($profileUserData->getImageId() ? 'includes/assets/images/profiles/' . $profileUserData->getUserId() . '/' . $profileUserData->getImageId() . '.jpg' : "includes/assets/images/user-profile.jpg");
+        $profileImagePath = ($profileUserData->getImageId() ? '/admin/includes/assets/images/profiles/' . $profileUserData->getUserId() . '/' . $profileUserData->getImageId() . '.jpg' : "/admin/includes/assets/images/user-profile.jpg");
 
         $return = '
 <div class="container">
@@ -69,7 +69,7 @@ class Profile
                                                     <div class="tab-content">
                                                         <div role="tabpanel" class="tab-pane active" id="1">
                                                             <div class="contact-information">
-                                                                <h4>Contact information   <a href="?view=profile&action=update&user_id=' . $profileUserData->getUserId() . '"><span class="jsgrid-button jsgrid-edit-button ti-pencil" type="button" title="Edit"  ></span></a></h4>
+                                                                <h4>Contact information   <a href="/admin/profile/update/' . $profileUserData->getUserId() . '"><span class="jsgrid-button jsgrid-edit-button ti-pencil" type="button" title="Edit"  ></span></a></h4>
                                                                 
                                                                 <div class="name-content">
                                                                     <span class="contact-title">Name:</span>
@@ -113,10 +113,14 @@ class Profile
 
     public function getForm(array $action): string
     {
-        if (isset($action['user_id'])) {
-            $profileUserData = $this->profileController->getOne($_SESSION['user_id']);
-            //echo "<pre>" . print_r($userInfo, true) . "</pre>";
+        $id = empty($action) ? $_SESSION['user_id'] : $action['id'];
+        $profileUserData = $this->profileController->getOne($id);
+        if (!$profileUserData) {
+            $profileUserData = new ProfileModel((object)['user_id' => $id]);
         }
+        $action['action'] = $action['action'] ?? "add";
+        //echo "<pre>" . print_r($userInfo, true) . "</pre>";
+
 
         $imageProfileController = new ImageProfileController();
         $images = $imageProfileController->getAll($profileUserData->getUserId());
@@ -131,8 +135,8 @@ class Profile
                 </div>
                 <div class="card-body">
                     <div class="form-validation">
-                        <form class="form-valide" name="profileForm" method="POST" action="?view=profile&action=' . $action['action'] . '" onsubmit="return validateEmail()">
-                            Profile Image Management: <a href="?view=imageProfile&action=add&user_id=' . $profileUserData->getUserId() . '"><button type="button" class="btn btn-primary btn-sm btn-addon m-b-5 m-l-5"><i class="ti-plus"></i>Management</button></a>
+                        <form class="form-valide" name="profileForm" method="POST" action="/admin/profile/' . $action['action'] . '" onsubmit="return validateEmail()">
+                            Profile Image Management: <a href="/admin/imageProfile/add/' . $profileUserData->getUserId() . '"><button type="button" class="btn btn-primary btn-sm btn-addon m-b-5 m-l-5"><i class="ti-plus"></i>Management</button></a>
                             <br>
         
                             <div class="form-group row ">
@@ -226,8 +230,8 @@ class Profile
                             <br>
                             <div id="test">
                             </div>
-                            <input type="hidden" id="user_id" name="user_id" value="' . ($action['action'] == 'update' ? $profileUserData->getUserId() : '') . '">
-                            <a class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" href="?view=profile"><i class="ti-back-left"></i> Retour</a>
+                            <input type="hidden" id="user_id" name="user_id" value="' . $id . '">
+                            <a class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" href="/admin/profile"><i class="ti-back-left"></i> Retour</a>
                             <button type="submit" name="submit" class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i> Submit</button>
                         </form>
                     </div>

@@ -43,7 +43,7 @@ class Images
                                                     <th style="width: 300px;">Name</th>
                                                     <th style="width: 300px;">Create date</th>
                                                     <th style="width: 300px;">
-                                                        <a href="?view=image&action=add">
+                                                        <a href="/admin/image/add">
                                                             <span class="jsgrid-button jsgrid-mode-button jsgrid-insert-mode-button ti-plus" type="button" title=""></span>
                                                         </a>
                                                     </th>
@@ -61,10 +61,10 @@ class Images
                                                     <td style="width: 150px;">' . $imageItem->getName() . '</td>
                                                     <td style="width: 150px;">' . $imageItem->getCreateDate() . '</td>
                                                     <td style="width: 50px;">
-                                                        <a href="?view=image&action=update&image_id=' . $imageItem->getImageId() . '">
+                                                        <a href="/admin/image/update/' . $imageItem->getImageId() . '">
                                                             <span class="jsgrid-button jsgrid-edit-button ti-pencil" type="button" title="Edit"></span>
                                                         </a>
-                                                        <a href="?view=image&action=delete&image_id=' . $imageItem->getImageId() . '">
+                                                        <a href="/admin/image/delete/' . $imageItem->getImageId() . '">
                                                             <span class="jsgrid-button jsgrid-delete-button ti-trash" type="button" title="Delete"></span>
                                                         </a>
                                                     </td>
@@ -87,8 +87,8 @@ class Images
 
     public function getForm(array $action): string
     {
-        if (isset($action['image_id'])) {
-            $image = $this->imageController->getOne($_GET['image_id']);
+        if (isset($action['id'])) {
+            $image = $this->imageController->getOne($action['id']);
         }
 
         $return = '
@@ -101,7 +101,7 @@ class Images
                             </div>
                             <div class="card-body">
                                 <div class="form-validation">
-                                    <form class="form-valide" name="imageForm" action="?view=image&action=' . $action['action'] . '" method="POST" enctype="multipart/form-data" onsubmit="return validateForm(\'imageForm\',\'imageTitle\');" onkeypress="verifierCaracteres(event); return false;">
+                                    <form class="form-valide" name="imageForm" action="/admin/image/' . $action['action'] . '" method="POST" enctype="multipart/form-data" onsubmit="return validateForm(\'imageForm\',\'imageTitle\');" onkeypress="verifierCaracteres(event); return false;">
                                         <div class="form-group row">
                                             <label class="col-lg-3 col-form-label" for="title">Title :<span class="text-danger">*</span></label>
                                             <div class="col-lg-9">
@@ -119,7 +119,7 @@ class Images
                                         <br>
                                         <input type="hidden" name="image_id" value="' . ($action['action'] == 'update' ? $image->getImageId() : '') . '">
                                         <br>
-                                        <a class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" href="?view=image"><i class="ti-back-left"></i></span>Retour</a>
+                                        <a class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" href="/admin/image"><i class="ti-back-left"></i></span>Retour</a>
                                         <button type="submit" name="submit" class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
                                     </form>
                                 </div>

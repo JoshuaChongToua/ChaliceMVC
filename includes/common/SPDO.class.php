@@ -18,10 +18,10 @@ class SPDO
      */
     private static SPDO $instance;
 
-    const DEFAULT_SQL_USER = 'root';
+    const DEFAULT_SQL_USER = 'bjxo0033_chaliceautumn';
     const DEFAULT_SQL_HOST = 'localhost';
-    const DEFAULT_SQL_PASS = '';
-    const DEFAULT_SQL_DTB = 'chalice';
+    const DEFAULT_SQL_PASS = 'Chalice4Autumn!';
+    const DEFAULT_SQL_DTB = 'bjxo0033_chaliceautumn';
 
     /**
      * constructor
