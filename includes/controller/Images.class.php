@@ -19,6 +19,20 @@ class Images
     {
     }
 
+
+    public function getCount(): int
+    {
+        $pdo = SPDO::getInstance();
+        $query = "SELECT COUNT(*) as count FROM images;";
+        $pdo->execPrepare($query);
+        $result = $pdo->execQuery(true);
+        if (!$result ) {
+            return 0;
+        }
+        $count = (int) $result['count'];
+
+        return $count;
+    }
     public function getOne(int $imageId): ImagesModel|bool
     {
         $pdo = SPDO::getInstance();

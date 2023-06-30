@@ -70,6 +70,7 @@ class Users
             </div>
         </div>
     </div>
+</div>
 </div>';
 
         return $return;
@@ -102,20 +103,15 @@ class Users
                                             <input class="form-control" type="text" id="login" name="login" value="' . ($action['action'] == 'update' ? $userInfo->getLogin() : '') . '" onkeypress="verifierCaracteres(event); return false;">
                                         </div>
                                     </div>
-        
                                     <br>
-        
                                     <div class="form-group row">
                                         <label class="col-lg-3 col-form-label" for="password">Password:<span class="text-danger">*</span></label>
                                         <div class="col-lg-9">
                                             <input class="form-control" id="password" type="password" name="password" value="' . ($action['action'] == 'update' ? $userInfo->getPassword() : '') . '">
                                         </div>
                                     </div>
-        
                                     <br>
-        
                                     <input type="hidden" name="user_id" value="' . ($action['action'] == 'update' ? $userInfo->getUserId() : '') . '">
-        
                                     <div class="form-group row">
                                         <label class="col-lg-3 col-form-label" for="role">Role:<span class="text-danger">*</span></label>
                                         <div class="col-lg-9">
@@ -126,24 +122,21 @@ class Users
                 $return .= '<option value="' . $type->getTypeId() . '" ' . $selected . '>' . $type->getRole() . '</option>';
             }
         }
-
-        $return .= '</select>
+        $return .= '                        </select>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <a class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" href="/admin/user">
+                                        <i class="ti-back-left"></i>Retour
+                                    </a>
+                                    <button type="submit" name="submit" class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
-            <br>
-      
-            <a class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" href="/admin/user"><i class="ti-back-left"></i>Retour</a>
-                   
-            <button type="submit" name="submit" class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
-                                        
-        </form>
-    </div>
-</div>
-</div>
-</div>
-</div>
-</div>';
+        </div>';
 
         return $return;
     }

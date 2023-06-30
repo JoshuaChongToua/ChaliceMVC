@@ -6,29 +6,52 @@
         referrerpolicy="origin"></script>
 <script src="/admin/includes/assets/js/tinymce-jquery.min.js"></script>
 
-<script src="/admin/includes/assets/js/lib/jquery.nanoscroller.min.js"></script>
-<script src="/admin/includes/assets/js/lib/menubar/sidebar.js"></script>
-<script src="/admin/includes/assets/js/lib/preloader/pace.min.js"></script>
-<script src="/admin/includes/assets/js/lib/bootstrap.min.js"></script>
+<?php if ($_GET['view'] == "homepage" || $_GET['view'] == "login" || $_GET['view'] == "logout" || $_GET['view'] == "user" || $_GET['view'] == "news" || $_GET['view'] == "type" || $_GET['view'] == "image" || $_GET['view'] == "profile" || $_GET['view'] == "image_profile"){ ?>
 
+    <script src="/admin/includes/assets/js/lib/jquery.nanoscroller.min.js"></script>
+    <script src="/admin/includes/assets/js/lib/menubar/sidebar.js"></script>
+    <script src="/admin/includes/assets/js/lib/preloader/pace.min.js"></script>
+    <script src="/admin/includes/assets/js/lib/bootstrap.min.js"></script>
+
+    <script src="/admin/includes/assets/js/lib/jsgrid/db.js"></script>
+    <script src="/admin/includes/assets/js/lib/jsgrid/jsgrid.core.js"></script>
+    <script src="/admin/includes/assets/js/lib/jsgrid/jsgrid.load-indicator.js"></script>
+    <script src="/admin/includes/assets/js/lib/jsgrid/jsgrid.load-strategies.js"></script>
+    <script src="/admin/includes/assets/js/lib/jsgrid/jsgrid.sort-strategies.js"></script>
+    <script src="/admin/includes/assets/js/lib/jsgrid/jsgrid.field.js"></script>
+    <script src="/admin/includes/assets/js/lib/jsgrid/fields/jsgrid.field.text.js"></script>
+    <script src="/admin/includes/assets/js/lib/jsgrid/fields/jsgrid.field.number.js"></script>
+    <script src="/admin/includes/assets/js/lib/jsgrid/fields/jsgrid.field.select.js"></script>
+    <script src="/admin/includes/assets/js/lib/jsgrid/fields/jsgrid.field.checkbox.js"></script>
+    <script src="/admin/includes/assets/js/lib/jsgrid/fields/jsgrid.field.control.js"></script>
+
+<?php } ?>
 
 <script src="/admin/includes/assets/js/lib/select2/select2.full.min.js"></script>
 <script src="/admin/includes/assets/js/lib/form-validation/jquery.validate.min.js"></script>
 <script src="/admin/includes/assets/js/lib/form-validation/jquery.validate-init.js"></script>
 
-<script src="/admin/includes/assets/js/lib/jsgrid/db.js"></script>
-<script src="/admin/includes/assets/js/lib/jsgrid/jsgrid.core.js"></script>
-<script src="/admin/includes/assets/js/lib/jsgrid/jsgrid.load-indicator.js"></script>
-<script src="/admin/includes/assets/js/lib/jsgrid/jsgrid.load-strategies.js"></script>
-<script src="/admin/includes/assets/js/lib/jsgrid/jsgrid.sort-strategies.js"></script>
-<script src="/admin/includes/assets/js/lib/jsgrid/jsgrid.field.js"></script>
-<script src="/admin/includes/assets/js/lib/jsgrid/fields/jsgrid.field.text.js"></script>
-<script src="/admin/includes/assets/js/lib/jsgrid/fields/jsgrid.field.number.js"></script>
-<script src="/admin/includes/assets/js/lib/jsgrid/fields/jsgrid.field.select.js"></script>
-<script src="/admin/includes/assets/js/lib/jsgrid/fields/jsgrid.field.checkbox.js"></script>
-<script src="/admin/includes/assets/js/lib/jsgrid/fields/jsgrid.field.control.js"></script>
+
+
+
+
+
+<?php if ($_GET['view'] == "homepage") { ?>
+    <script src="js/lib/flot-chart/excanvas.min.js"></script>
+    <script src="js/lib/flot-chart/jquery.flot.js"></script>
+    <script src="js/lib/flot-chart/jquery.flot.pie.js"></script>
+    <script src="js/lib/flot-chart/jquery.flot.time.js"></script>
+    <script src="js/lib/flot-chart/jquery.flot.stack.js"></script>
+    <script src="js/lib/flot-chart/jquery.flot.resize.js"></script>
+    <script src="js/lib/flot-chart/jquery.flot.crosshair.js"></script>
+    <script src="js/lib/flot-chart/curvedLines.js"></script>
+    <script src="js/lib/flot-chart/flot-tooltip/jquery.flot.tooltip.min.js"></script>
+    <script src="js/lib/flot-chart/flot-chart-init.js"></script>
+<?php } ?>
 
 <script src="/admin/includes/assets/js/scripts.js"></script>
+<script type="text/javascript" src="/admin/includes/assets/js/functions.js"></script>
+
 
 <script>
     $(document).ready(function () {
@@ -62,7 +85,7 @@
             } else {
                 var imgElement = document.createElement("img");
                 const image = document.getElementById("image_id")
-                var imgPath = "/admin/includes/assets/images/upload/" + image + ".jpg" ;
+                var imgPath = "/home/bjxo0033/chaliceautumn/admin/includes/assets/images/upload/" + image + ".jpg" ;
                 imgElement.src = imgPath;
                 document.getElementById("test").innerHTML = "";
                 document.getElementById("test").appendChild(imgElement);

@@ -15,10 +15,24 @@ class ImagesProfile
     {
     }
 
+    public function getCount(): int
+    {
+        $pdo = SPDO::getInstance();
+        $query = "SELECT COUNT(*) as count FROM images_profile;";
+        $pdo->execPrepare($query);
+        $result = $pdo->execQuery(true);
+        if (!$result ) {
+            return 0;
+        }
+        $count = (int) $result['count'];
+
+        return $count;
+    }
+
     public function getOne(int $imageId): ImagesProfilesModel|bool
     {
         $pdo = SPDO::getInstance();
-        $query = "SELECT * from images_profile where image_id=:imageId;";
+        $query = "SELECT * FROM images_profile WHERE image_id=:imageId;";
         $pdo->execPrepare($query);
         $pdo->execBindValue(':imageId', $imageId, PDO::PARAM_INT);
         $image = $pdo->execQuery(true);
@@ -114,7 +128,7 @@ class ImagesProfile
         $allowedExtensions = ['jpg', 'jpeg', 'png'];
         $fileExtension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
 
-        $destination = 'includes/assets/images/profiles/' . $userId . '/' . $this->kodex_random_string($length = 10) . '.' . $fileExtension;
+        $destination = '/home/bjxo0033/chaliceautumn/admin/includes/assets/images/profiles/' . $userId . '/' . $this->kodex_random_string($length = 10) . '.' . $fileExtension;
 
         if (!in_array($fileExtension, $allowedExtensions)) {
             return false;
@@ -124,7 +138,7 @@ class ImagesProfile
             //echo "L'image a été téléchargée avec succès.";
             return false;
         }
-        $destination2 = 'includes/assets/images/profiles/' . $userId . '/' . $lastInsertedId . '.' . $fileExtension;
+        $destination2 = '/home/bjxo0033/chaliceautumn/admin/includes/assets/images/profiles/' . $userId . '/' . $lastInsertedId . '.' . $fileExtension;
         if (!rename($destination, $destination2)) {
             return false;
         }
@@ -140,8 +154,8 @@ class ImagesProfile
         if ($image) {
             $allowedExtensions = ['jpg', 'jpeg', 'png'];
             $filename = $imageId;
-            $fileCollection = glob('includes/assets/images/profiles/' . $userId . '/' . $filename . '.*');
-            $tempPath = 'includes/assets/images/profiles/' . $userId . '/' . $filename;
+            $fileCollection = glob('/home/bjxo0033/chaliceautumn/admin/includes/assets/images/profiles/' . $userId . '/' . $filename . '.*');
+            $tempPath = '/home/bjxo0033/chaliceautumn/admin/includes/assets/images/profiles/' . $userId . '/' . $filename;
             foreach ($fileCollection as $filePath) {
                 foreach ($allowedExtensions as $extension) {
 
@@ -154,7 +168,7 @@ class ImagesProfile
             }
 
 
-            $imagePath = 'includes/assets/images/profiles/' . $userId . '/' . $filename;
+            $imagePath = '/home/bjxo0033/chaliceautumn/admin/includes/assets/images/profiles/' . $userId . '/' . $filename;
 
             if (file_exists($imagePath)) {
                 // Supprimer l'image du dossier

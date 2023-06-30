@@ -1,4 +1,6 @@
     ErrorDocument 401 "Authorisation Required"
+    ErrorDocument 404 "/admin/404.html"
+
     AuthUserFile "/home/bjxo0033/chaliceautumn/admin/.htpasswd"
     AuthName "Veuillez entrer vos identifiants"
     AuthType Basic
@@ -7,8 +9,11 @@
     </Limit>
 
     RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 
     RewriteRule ^([a-z]+)$ ?view=$1
     RewriteRule ^([a-z]+)/([a-z]+)$ ?view=$1&action=$2
-    RewriteRule ^([a-z]+)/([a-z]+)/([0-9]+)$ ?view=$1&action=$2&id=$3
+    RewriteRule ^([a-z_]+)/([a-z]+)/([0-9]+)$ ?view=$1&action=$2&id=$3
+

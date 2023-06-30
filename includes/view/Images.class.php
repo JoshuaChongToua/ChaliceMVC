@@ -26,7 +26,6 @@ class Images
         if ($imagesCollection === false) {
             return "Error; Fail to load images";
         }
-
         $return = '
             <div class="container">
                 <div id="main-content">
@@ -50,7 +49,6 @@ class Images
                                                 </tr>
                                             </thead>
                                             <tbody>';
-
         foreach ($imagesCollection as $imageItem) {
             $return .= '
                                                 <tr class="jsgrid-align-center" style="display: table-row;">
@@ -70,7 +68,6 @@ class Images
                                                     </td>
                                                 </tr>';
         }
-
         $return .= '
                                             </tbody>
                                         </table>
@@ -109,17 +106,17 @@ class Images
                                             </div>
                                         </div>
                                         <br>';
-
         if ($action['action'] != 'update') {
             $return .= '
                                         <input type="file" name="image">';
         }
-
         $return .= '
                                         <br>
                                         <input type="hidden" name="image_id" value="' . ($action['action'] == 'update' ? $image->getImageId() : '') . '">
                                         <br>
-                                        <a class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" href="/admin/image"><i class="ti-back-left"></i></span>Retour</a>
+                                        <a class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" href="/admin/image">
+                                            <i class="ti-back-left"></i>Retour
+                                        </a>
                                         <button type="submit" name="submit" class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
                                     </form>
                                 </div>

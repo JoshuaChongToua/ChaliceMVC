@@ -40,11 +40,9 @@ spl_autoload_register(function ($class) {
 use common\Parser;
 $parser = new Parser($_GET, $_POST);
 
-if (!empty($_SESSION['login'])) {
-    require_once "includes/header.php";
-}
+
+require_once "includes/header.php";
+
 echo $parser->getDisplay();
 
-if (!empty($_SESSION['login'])) {
-    require_once "includes/footer.php";
-}
+require_once "includes/footer.php";

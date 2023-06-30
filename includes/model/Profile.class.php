@@ -178,7 +178,8 @@ class Profile
                                              phone = :phone,
                                              address = :address,
                                              email = :email,
-                                             city = :city
+                                             city = :city,
+                                             image_id = :imageId
                                              ;";
 
         $pdo->execPrepare($query);

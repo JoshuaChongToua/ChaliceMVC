@@ -126,18 +126,14 @@ class News
                                             <input class="form-control" type="text" name="title" placeholder="Title"  value="' . ($action['action'] == 'update' ? $newsInfo->getTitle() : '') . '" onkeypress="verifierCaracteres(event); return false;" />
                                         </div>
                                     </div>
-
                                     <br>
-
                                     <div class="form-group row ">
                                         <label class="col-lg-3 col-form-label">Description:</label>
                                         <div class="col-lg-9">
                                             <textarea id="tiny" name="description">' . ($action['action'] == 'update' ? $newsInfo->getDescription() : '') . '</textarea>
                                         </div>
                                     </div>
-
                                     <br>';
-
         if (!empty($images)) {
             $return .= '
                                     <div class="form-group row ">
@@ -146,7 +142,6 @@ class News
                                             <select class="form-control" name="image_id" onchange="getImageSelect( this.value )">
 
                                                 <option value="--">--</option>';
-
             foreach ($images as $image) {
                 if (!empty($newsInfo)) {
                     $selected = ($image->getImageId() == $newsInfo->getImageId()) ? 'selected="selected"' : '';
@@ -160,14 +155,12 @@ class News
                                             </select>
                                         </div>
                                     </div>
-
                                     <div class="form-group row ">  
                                         <label class="col-lg-3 col-form-label"></label>
-                                        <div id="test" class="col-lg-9">
+                                        <div id="test" class="col-lg-9" >
                                         </div>            
                                     </div>';
         }
-
         $return .= '
                                     <div class="form-group row ">                             
                                         <label class="col-lg-3 col-form-label">Link :</label>
@@ -175,44 +168,35 @@ class News
                                             <input class="form-control" type="text" name="link" placeholder="Link" value="' . ($action['action'] == 'update' ? $newsInfo->getLink() : '') . '" onkeypress="verifierCaracteres(event); return false;" autocomplete="off" />
                                         </div>
                                     </div>
-
                                     <br>
-
                                     <div class="form-group row ">                             
                                         <label class="col-lg-3 col-form-label">Date de publication :</label>
                                         <div class="col-lg-9">
                                             <input class="form-control" type="date" id="date" name="publicationDate" value="' . ($action['action'] == 'update' ? date('Y-m-d', strtotime($newsInfo->getPublicationDate())) : '') . '">
                                         </div>
                                     </div>
-
                                     <br>';
-
         if ($action['action'] == "update") {
             $selected = $newsInfo->isEnable();
         }
-
         $return .= '
                                     <div class="form-group row ">                                     
                                         <label class="col-lg-3 col-form-label">Enable :</label>
-
                                         <div class="col-lg-4">        
                                             <input type="radio"  name="enable" value="1" ' . ($action['action'] == "update" && $selected == 1 ? 'checked="checked"' : '') . '>
                                             <label>True</label>
                                         </div>
-
                                         <div class="col-lg-5">        
                                             <input type="radio"  name="enable" value="0" ' . ($action['action'] == "update" && $selected == 0 ? 'checked="checked"' : '') . '>
                                             <label>False</label>
                                         </div>
                                     </div>
-
                                     <br>
-
                                     <input type="hidden" name="news_id" value="' . ($action['action'] == 'update' ? $newsInfo->getNewsId() : '') . '">
-
                                     <br>
-
-                                    <a class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" href="/admin/news"><i class="ti-back-left"></i></span>Retour</a>
+                                    <a class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" href="/admin/news">
+                                        <i class="ti-back-left"></i>Retour
+                                    </a>
                                     <button type="submit" name="submit"  class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
                                 </form>
                             </div>

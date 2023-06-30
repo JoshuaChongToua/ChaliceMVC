@@ -97,15 +97,13 @@ class UsersTypes
                                             <input class="form-control" type="text" name="role" value="' . ($action['action'] == 'update' ? $typeInfo->getRole() : '') . '"/>
                                         </div>
                                     </div>
-    
                                     <br>
-    
                                     <input type="hidden" name="type_id" value="' . ($action['action'] == 'update' ? $typeInfo->getTypeId() : '') . '">
                                     <br>
-    
-                                    <a class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" href="/admin/type"><i class="ti-back-left"></i>Retour</a>
+                                    <a class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" href="/admin/type">
+                                        <i class="ti-back-left"></i>Retour
+                                    </a>
                                     <button type="submit" name="submit" class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
-    
                                 </form>
                             </div>
                         </div>

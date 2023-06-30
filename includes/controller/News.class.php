@@ -15,6 +15,30 @@ class News
     {
     }
 
+
+    public function getNewsCountByDate()
+    {
+        $pdo = SPDO::getInstance();
+        $query = "SELECT DATE(publicationDate) AS date, COUNT(*) AS count FROM news GROUP BY DATE(publicationDate)";
+        $pdo->execPrepare($query);
+        $results = $pdo->execQuery();
+
+        $data = array(
+            'count' => array(), // tableau pour stocker les nombres de news
+            'date' => array()   // tableau pour stocker les dates
+        );
+
+        foreach ($results as $row) {
+            $date = $row['date'];
+            $count = $row['count'];
+            $data['date'][] = $date;
+            $data['count'][] = $count;
+        }
+
+        return $data;
+    }
+
+
     public function getOne(int $newsId): NewsModel|bool
     {
         $pdo = SPDO::getInstance();

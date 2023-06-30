@@ -6,8 +6,10 @@ function getImageSelect (string)
     } else {
 
             var imgElement = document.createElement("img");
-            var imgPath = "includes/assets/images/upload/" + string + ".jpg";
+            var imgPath = "/admin/includes/assets/images/upload/" + string.trim() + ".jpg";
             imgElement.src = imgPath;
+            imgElement.style.width = "100px";
+            imgElement.style.height = "100px";
             document.getElementById("test").innerHTML = "";
             document.getElementById("test").appendChild(imgElement);
 
